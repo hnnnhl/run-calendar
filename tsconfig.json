@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "resolveJsonModule": true,
     "module": "esnext",
     "target": "es2017",
     "moduleResolution": "node",
@@ -17,5 +18,6 @@
   },
   "include": ["./src/**/*.ios.ts", "./src/**/*.android.ts"],
   "files": ["./src/main.ts", "./references.d.ts", "./src/polyfills.ts"],
-  "exclude": ["node_modules", "platforms"]
+  "exclude": ["node_modules", "platforms"],
+ 
 }
