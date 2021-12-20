@@ -9,9 +9,9 @@ import { knownFolders, Folder, File, path } from "@nativescript/core/file-system
 export class DataService {
   
   // path: /data/user/0/org.nativescript.RunCalendar/files/RunCalendarData/data.json
-  private folderPath: string = path.join(knownFolders.documents().path, "RunCalendarData"); 
+  private folderPath: string = path.join(knownFolders.documents().path, "RunCalendarData");
   private folder: Folder = <Folder>Folder.fromPath(this.folderPath);
-  private filePath: string = path.join(this.folder.path, "data.json"); 
+  private filePath: string = path.join(this.folder.path, "data.json");
   private storageFile: File = File.fromPath(this.filePath);
 
   public AllData: DistanceData[] = [];
