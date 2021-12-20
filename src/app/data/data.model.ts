@@ -1,4 +1,4 @@
 export interface DistanceData {
     date: Date,
-    distance: number, //in km
+    distance: number //in km
 }
