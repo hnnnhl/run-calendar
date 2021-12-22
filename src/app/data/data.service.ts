@@ -16,7 +16,14 @@ export class DataService {
 
   public AllData: DistanceData[] = [];
 
-  constructor() {}
+  constructor() {
+    try{
+      this.getData();}
+    catch(e){
+        console.log("ERROR FROM CONSOLE: "+e);
+      }
+
+  }
 
   public getData() {
     if(JSON.parse(this.storageFile.readTextSync())){
@@ -26,6 +33,7 @@ export class DataService {
 
   public addEntry(entry: DistanceData) {
     this.AllData.push(entry);
+    this.save();
   }
 
   public save(){
