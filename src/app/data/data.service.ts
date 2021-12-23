@@ -1,33 +1,24 @@
 import { Injectable } from '@angular/core';
 import { DistanceData } from './data.model';
 
-import { knownFolders, Folder, File, path } from "@nativescript/core/file-system";
-
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
-  
-  // path: /data/user/0/org.nativescript.RunCalendar/files/RunCalendarData/data.json
-  private folderPath: string = path.join(knownFolders.documents().path, "RunCalendarData");
-  private folder: Folder = <Folder>Folder.fromPath(this.folderPath);
-  private filePath: string = path.join(this.folder.path, "data.json");
-  private storageFile: File = File.fromPath(this.filePath);
+  private _storage = require("nativescript-android-fs");
+  private _dataFolder = "/Android/data/org.nativescript.RunCalendar";
+  private _dataFile = "data.txt";
 
   public AllData: DistanceData[] = [];
 
   constructor() {
-    try{
-      this.getData();}
-    catch(e){
-        console.log("ERROR FROM CONSOLE: "+e);
-      }
-
+      this.getData();
   }
 
   public getData() {
-    if(JSON.parse(this.storageFile.readTextSync())){
-      this.AllData = JSON.parse(this.storageFile.readTextSync());
+    const dataFileContents = this._storage.read(this._dataFolder, this._dataFile);
+    if(dataFileContents){
+      this.AllData = JSON.parse(dataFileContents);
     }
   }
 
@@ -38,7 +29,7 @@ export class DataService {
 
   public save(){
     var AllDataString: string = JSON.stringify(this.AllData);
-    this.storageFile.writeTextSync(AllDataString);
+    this._storage.create(this._dataFolder, this._dataFile, AllDataString);
   }
 
   averageDistance(startDate: Date, endDate: Date): number{
