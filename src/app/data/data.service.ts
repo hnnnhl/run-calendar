@@ -41,7 +41,28 @@ export class DataService {
     this.storageFile.writeTextSync(AllDataString);
   }
 
-  //Remove later. For testing the contents of the data.json file.
+  averageDistance(startDate: Date, endDate: Date): number{
+    // Iterating through AllData and pushing only the data within the startDate and endDate to dateFilteredData
+    var datefilteredData: DistanceData[] = [];
+    this.AllData.forEach(data => {
+      if ((startDate <= data.date) && (data.date <= endDate)){
+        datefilteredData.push(data);
+      }
+    });
+
+    var distanceSum = 0;
+    datefilteredData.forEach(data => {
+      distanceSum += data.distance;
+    });
+
+    // Calculating the number of days between startDate and endDate
+    const timeDiff: number = endDate.getTime() - startDate.getTime();
+    const dayDiff: number = timeDiff / (1000 * 3600 * 24);
+
+    return (distanceSum/dayDiff);
+  }
+
+  // Remove later. For testing the contents of the data.json file.
   public testPrint(): string{
     var testString = '';
     this.AllData.forEach(x =>{
