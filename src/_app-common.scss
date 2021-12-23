@@ -4,6 +4,60 @@
 // Place any CSS rules you want to apply on both iOS and Android here.
 // This is where the vast majority of your CSS code goes.
 
+.Armata {
+  font-family: "Armata", "Armata-Regular";
+ }
+
+
+.centerText {
+  color: const(rgb(38, 64, 148));
+  font-size: 14;
+  vertical-align: center;
+  horizontal-align: center;
+  font-family: "Armata", "Armata-Regular";
+}
+
+button {
+  width: 70%;
+  border-radius: 60px;
+  font-size: 16px;
+  color: white;
+  background-color: rgb(64, 57, 75);
+  border-width: 10px; 
+  border-color:rgb(90, 76, 90);
+  font-family: "Armata", "Armata-Regular";
+}
+
+label.options {
+  font-size: 40px;
+  color: white;
+  font-family: "Armata", "Armata-Regular";
+}
+
+Label {
+  font-family: "Armata", "Armata-Regular";
+}
+
+ActionBar {
+  background-color: white;
+}
+
+ActionBar GridLayout{
+  background-color: white;
+}
+
+GridLayout {
+  background-color: #4d438f;
+}
+
+StackLayout {
+  background-color: #4d438f;
+}
+
+.spacer {
+  height: 100px
+}
+
 // Font icon class
 .fab {
   font-family: 'Font Awesome 5 Brands', 'fa-brands-400';

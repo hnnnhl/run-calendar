@@ -1,13 +1,20 @@
 <ActionBar class="action-bar">
   <NavigationButton visibility="hidden"></NavigationButton>
   <GridLayout columns="50, *">
-    <Label class="action-bar-title" text="Export" colSpan="2"></Label>
+    <Label class="action-bar-title" text="More" colSpan="2"></Label>
 
-    <Label class="fas" text="&#xf56e;" (tap)="onDrawerButtonTap()"></Label>
+    <Label class="fas" text="	&#xf085;" (tap)="onDrawerButtonTap()"></Label>
   </GridLayout>
 </ActionBar>
 
-<GridLayout class="page__content">
-  <Label class="page__content-icon far" text="&#xf1ea;"></Label>
-  <Label class="page__content-placeholder" text="Export Page"></Label>
+<GridLayout rows="250, auto, auto, auto, auto" style="background-color: #4d438f">
+  <StackLayout row="0" horizontalAlignment="center"
+      verticalAlignment="center">
+      <Label class="options" text="Options"></Label>
+  </StackLayout>
+  <StackLayout row="1" horizontalAlignment="center">
+      <Button text="Import" (tap)="onImport()"></Button>
+      <Label class="spacer"></Label>
+      <Button text="Export" ></Button>
+  </StackLayout>
 </GridLayout>

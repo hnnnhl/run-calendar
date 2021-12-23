@@ -1,0 +1,8 @@
+{
+    "data": [
+        {"date": "12/10/2021", "distance": 5},
+        {"date": "12/11/2021", "distance": 7},
+        {"date": "12/13/2021", "distance": 1},
+        {"date": "12/15/2021", "distance": 3}
+            ]
+}
