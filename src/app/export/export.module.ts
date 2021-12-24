@@ -6,7 +6,7 @@ import { ExportComponent } from './export.component'
 
 @NgModule({
   imports: [
-    NativeScriptCommonModule, 
+    NativeScriptCommonModule,
     ExportRoutingModule,
     NativeScriptFormsModule ],
   declarations: [
