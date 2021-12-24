@@ -7,7 +7,22 @@
   </GridLayout>
 </ActionBar>
 
-<GridLayout class="page__content">
-  <Label class="page__content-icon fas" text="&#xf015;"></Label>
-  <Label class="page__content-placeholder" text="<!-- Page content goes here -->"></Label>
+<GridLayout class="page__content" rows="180, 230, 150, 70, auto" >
+   <label row="0" text="How many {{ units }} did you run today?" 
+            horizontalAlignment="center" verticalAlignment="bottom"
+            textWrap="true" style="width: 80%; text-align: center; font-size: 30px;"></label>
+
+    <TextField row="1" [(ngModel)]="distanceInput"
+                style="font-size: 100px; text-align: center;
+                width: 30%; background-color: #4d438f; color: white"></TextField>
+    
+    <StackLayout row="2" orientation="horizontal" horizontalAlignment="center" verticalAlignment="center">
+      <label text="mi" style="font-size: 12px; padding-top: 55px"></label>
+      <Switch color="#c4614f" backgroundColor="white" offBackgroundColor="white" 
+              horizontalAlignment="center" ></Switch>
+      <label text="km" style="font-size: 12px; padding-top: 55px"></label>
+    </StackLayout>
+   
+    <Button row="3" text="Submit" style="width: 40%; font-size: 30px;" ></Button>
+
 </GridLayout>
