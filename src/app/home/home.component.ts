@@ -45,8 +45,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.unit = this.dataService.unit;
     this.unit === 'kilometers' ? this.unitKm = true : this.unitKm = false;
     
-      this.dataService.deleteAllData();
-  //this.dataService.addEntry({date:new Date(2021, 11, 21), distance:1});
+   //   this.dataService.deleteAllData();
+  this.dataService.addEntry({date:new Date(2021, 11, 21), distance:1});
   /* this.dataService.addEntry({date:new Date("2022-02-23T21:37:30.143Z"), distance:3});
   this.dataService.addEntry({date:new Date("2022-02-19T21:37:30.143Z"), distance:10});
   this.dataService.addEntry({date:new Date("2022-03-11T21:37:30.143Z"), distance:13});
