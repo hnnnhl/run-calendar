@@ -49,7 +49,7 @@ export class CalendarEntriesService {
                 let copy:{month: number, year: number}[] = []
                 this._activeMonths.forEach(x => {copy.push({month: x.month, year: x.year})});
                 return copy;
-        }  
+        }
 
         initMonths(): MonthTileObject[][] {
               
@@ -104,7 +104,7 @@ export class CalendarEntriesService {
                 while (nextDate < lastDay) {
                     tempDaysOfMonth.push(new Date(nextDate.getTime()));
                     nextDate.setDate(nextDate.getDate()+1);
-                } 
+                }
                 tempDaysOfMonth.push(new Date(nextDate.getTime()));
         
                 var tempMonthTileList: MonthTileObject[] = [];
@@ -115,7 +115,7 @@ export class CalendarEntriesService {
                 tempDaysOfMonth.forEach((day, index) => {
 
                     if(day.getDay() === 0 && index > 6)
-                    { currentRow = currentRow+1; } 
+                    { currentRow = currentRow+1; }
 
                     let thisDaysDistance: DistanceData = currentMonthGroupedData.find(data => this.sameDay(data.date, day));
                     if (!thisDaysDistance){

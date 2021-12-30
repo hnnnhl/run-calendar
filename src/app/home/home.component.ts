@@ -15,7 +15,7 @@ import { ListPickerPopupComponent } from './list-picker-popup/list-picker-popup.
 })
 export class HomeComponent implements OnInit, AfterViewInit {
 
- //  @ViewChild('calendar') Calendar: CalendarComponent; 
+ //  @ViewChild('calendar') Calendar: CalendarComponent;
   @ViewChild("calendar", { read: ViewContainerRef }) container: ViewContainerRef;
   Calendar: CalendarComponent;
 
@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public isBusy: boolean = false;
   public entrySubmitted: boolean = false;
 
-  constructor(private dataService: DataService, 
+  constructor(private dataService: DataService,
               private resolver: ComponentFactoryResolver,
               private modalService: ModalDialogService,
               private viewContainerRef: ViewContainerRef) {
@@ -53,7 +53,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   this.dataService.addEntry({date:new Date("2022-04-01T21:37:30.143Z"), distance:10});
   this.dataService.addEntry({date:new Date("2022-04-02T21:37:30.143Z"), distance:15});
   this.dataService.addEntry({date:new Date("2022-04-16T21:37:30.143Z"), distance:6});
-  this.dataService.addEntry({date:new Date("2022-03-28T21:37:30.143Z"), distance:13});   
+  this.dataService.addEntry({date:new Date("2022-03-28T21:37:30.143Z"), distance:13});
  */
   }
 
@@ -108,7 +108,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
         else {
           this.Calendar.scrollView.scrollToHorizontalOffset(this.Calendar.defaultXCoord-50, true);
-        } 
+        }
 
       });
 
@@ -117,7 +117,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.isBusy = false;
         
       
-    } 
+    }
 
   navRun(){
       this._scrollView.scrollToVerticalOffset(0, true);
@@ -147,7 +147,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
 
       let options: ModalDialogOptions = {
-        context: { 
+        context: {
           list: pickerlist,
           lastSelected: selected },
         viewContainerRef: this.viewContainerRef
