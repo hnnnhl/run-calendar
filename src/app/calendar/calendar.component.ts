@@ -23,7 +23,7 @@ export class CalendarComponent implements OnInit {
 
   constructor(private _entriesService: CalendarEntriesService){}
 
-  ngOnInit(): void {  
+  ngOnInit(): void {
     this.resetMonths()
     }
 
@@ -68,7 +68,7 @@ export class CalendarComponent implements OnInit {
             this.loading.emit(false)
             await this.sleep(20);
             this.scrollView.scrollToHorizontalOffset(this.nextMonthXCoord-200, true);
-            await this.sleep(30); 
+            await this.sleep(30);
             this.scrollView.scrollToHorizontalOffset(this.nextMonthXCoord, true);
             await this.sleep(30);
           
@@ -106,7 +106,7 @@ export class CalendarComponent implements OnInit {
 
         }
       default: {this.loading.emit(false);}
-      } 
+      }
 
       this.loading.emit(false);
 

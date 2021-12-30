@@ -32,7 +32,7 @@ export class MonthComponent implements OnInit {
 
      if(this.month && this.year){
             this.daysOfMonth = this._entriesService.setupMonthTiles(this.month, this.year);
-        } 
+        }
 
       this.currentMonth = this._entriesService.currentMonth;
 
@@ -45,9 +45,9 @@ export class MonthComponent implements OnInit {
     }
 
     showTileDistance(tileDate: Date): boolean{
-      if (this.earliest < tileDate && tileDate < this.tomorrow) { 
+      if (this.earliest < tileDate && tileDate < this.tomorrow) {
         return true;
-      } 
+      }
       else {
         return false;
       }
@@ -55,7 +55,7 @@ export class MonthComponent implements OnInit {
     
     polishDistance(distance: number): number{
       // Distances are stored in km by default
-      // This converts the raw distances into miles if the user has selected miles 
+      // This converts the raw distances into miles if the user has selected miles
       // and rounds the numbers to display on the calendar
 
       let conversion: number = distance;
@@ -75,7 +75,7 @@ export class MonthComponent implements OnInit {
     }
     else if (!tile.primaryMonth) {
       return 'monthTile another';
-    } 
+    }
     else {
       return 'monthTile';
     }
@@ -84,7 +84,7 @@ export class MonthComponent implements OnInit {
   getDistanceStyle(tile: MonthTileObject): string {
     if (tile.distanceData.distance != 0) {
       return 'distance goalMet'
-    } 
+    }
     else {
       return 'distance none'
     }

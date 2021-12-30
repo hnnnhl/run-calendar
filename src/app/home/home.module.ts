@@ -8,7 +8,7 @@ import { ListPickerPopupComponent } from './list-picker-popup/list-picker-popup.
 @NgModule({
   imports: [
     HomeRoutingModule,
-    NativeScriptCommonModule, 
+    NativeScriptCommonModule,
     NativeScriptFormsModule,
     CalendarModule],
   declarations: [

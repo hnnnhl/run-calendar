@@ -5,7 +5,7 @@ import { FilePickerComponent } from './file-picker/file-picker.component'
 
 @NgModule({
   imports: [
-    NativeScriptCommonModule, 
+    NativeScriptCommonModule,
     NativeScriptFormsModule ],
   declarations: [
     ExportComponent,

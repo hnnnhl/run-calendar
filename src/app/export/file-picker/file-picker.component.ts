@@ -53,7 +53,7 @@ export class FilePickerComponent implements OnInit {
       console.log('catch: '+e);
     }
 
-   /*  if (file) { 
+   /*  if (file) {
       this.importSuccess = true;
       console.log('success import');
     } else {

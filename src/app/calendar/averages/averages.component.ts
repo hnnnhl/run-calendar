@@ -33,7 +33,7 @@ export class AveragesComponent implements OnInit {
 
     if (this.dailyAverage < 10){
       this.dailyAverage = +this.dailyAverage.toFixed(1);
-    } 
+    }
     else {
       this.dailyAverage = Math.round(this.dailyAverage);
     }
@@ -56,7 +56,7 @@ export class AveragesComponent implements OnInit {
     this.weeklyAverage = averageData30Days.dayDifference/numberOfWeeks;
     if (this.weeklyAverage < 10){
       this.weeklyAverage = +this.weeklyAverage.toFixed(1);
-    } 
+    }
     else {
       this.weeklyAverage = Math.round(this.weeklyAverage);
     }
@@ -81,7 +81,7 @@ export class AveragesComponent implements OnInit {
 
     if (this.monthlyAverage < 10){
       this.monthlyAverage = +this.monthlyAverage.toFixed(1);
-    } 
+    }
     else {
       this.monthlyAverage = Math.round(this.monthlyAverage);
     }

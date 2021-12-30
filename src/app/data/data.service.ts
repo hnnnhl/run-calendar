@@ -13,9 +13,9 @@ export class DataService {
   private _dataFolder = "/Android/data/org.nativescript.RunCalendar";
   private _dataFile = "data.txt";
 
-  private folderPath: string = path.join(knownFolders.documents().path, "RunCalendarData"); 
+  private folderPath: string = path.join(knownFolders.documents().path, "RunCalendarData");
   private folder: Folder = <Folder>Folder.fromPath(this.folderPath);
-  private filePath: string = path.join(this.folder.path, "data.json"); 
+  private filePath: string = path.join(this.folder.path, "data.json");
   private storageFile: File = File.fromPath(this.filePath);
 
   private _AllData: DistanceData[] = [];
@@ -142,7 +142,7 @@ export class DataService {
           this._AllData.forEach(data => {
 
             //Copying data to a variable to set the Date value to midnight
-            var tempData = {...data}; 
+            var tempData = {...data};
             tempData.date.setHours(0,0,0,0);
 
             if ((startDate <= tempData.date) && (tempData.date <= endDate)){
