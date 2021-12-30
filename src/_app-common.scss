@@ -8,6 +8,19 @@
   font-family: "Armata", "Armata-Regular";
  }
 
+ .averages {
+  margin: 1%; 
+  background-color: #55475c;
+  border-width: 5px; 
+  border-color:#745f74; 
+  width: 28%;
+  border-radius: 20px;
+  font-size: 14px;
+ }
+
+ .averages-title {
+  background-color: #4b2f43;
+ }
 
 .centerText {
   color: const(rgb(38, 64, 148));
@@ -22,11 +35,48 @@ button {
   border-radius: 60px;
   font-size: 16px;
   color: white;
-  background-color: rgb(64, 57, 75);
+  background-color: #4b2f43;
   border-width: 10px; 
-  border-color:rgb(90, 76, 90);
+  border-color:#614b58;
   font-family: "Armata", "Armata-Regular";
 }
+
+.homeSubmit {
+  color: #6b916b;
+  font-size: 60px; 
+  text-align: center;
+}
+
+
+.homeTitle {
+  width: 80%; 
+  text-align: center; 
+  font-size: 30px;
+}
+
+.listPicker {
+  background-color: #413a42;
+  color: white;
+  width: 320;
+  height: 150;
+  vertical-align: middle;
+  border-color: white;
+}
+
+.listPickerSubmit {
+  background-color: #453749;
+  color: #6b916b;
+  font-size: 30px; 
+  text-align: center;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+label.averages {
+  width: 88%;
+  padding: 4%;
+ }
+
 
 label.options {
   font-size: 40px;
@@ -40,8 +90,17 @@ Label {
   text-align: center;
 }
 
+.navBar {
+  font-size: 25px;
+}
+
 TextField {
   font-family: "Armata", "Armata-Regular";
+}
+
+TextField.distanceInput {
+  background-color: #301e36; 
+  color: white
 }
 
 ActionBar {
@@ -53,11 +112,11 @@ ActionBar GridLayout{
 }
 
 GridLayout {
-  background-color: #4d438f;
+  background-color: #301e36;
 }
 
 StackLayout {
-  background-color: #4d438f;
+  background-color: #301e36;
 }
 
 .spacer {
@@ -82,6 +141,7 @@ StackLayout {
 
 // Common page class
 .page__content {
+
   &-icon,
   &-placeholder {
     color: const(grey);
@@ -101,3 +161,36 @@ StackLayout {
 .nt-drawer__header-image {
   color: const(grey);
 }
+
+
+/// Month Tile Styling
+
+
+.monthTile { 
+  color: white;
+  background-color: black;
+  }
+  
+.monthTile.another {
+  color: #6e6a73;
+  background-color: #382c3f;
+  }
+  
+.monthTile.today {
+  color: #301e36;
+  background-color: white;
+  }
+  
+.distance {
+  font-size: 18px;
+  }
+  
+.distance.goalMet {
+  color: #54ad90;
+  }
+  
+.distance.none {
+  color: #ad5454;
+  }
+  
+  

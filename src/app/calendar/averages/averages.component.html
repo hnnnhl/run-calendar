@@ -1,0 +1,23 @@
+
+<StackLayout horizontalAlignment="center" verticalAlignment="center">
+
+    <label class="averages averages-title" text="Averages" style="font-size: 14px;" verticalAlignment="center"></label>
+
+    <StackLayout orientation="horizontal" horizontalAlignment="center" verticalAlignment="center" style="width: 100%">
+
+        <StackLayout class="averages" horizontalAlignment="center" verticalAlignment="center">
+        <label text="Daily"></label>
+        <label text="{{ dailyAverage }}" style="font-size: 60px;"></label>
+        </StackLayout>
+        <StackLayout class="averages" horizontalAlignment="center" verticalAlignment="center">
+        <label text="Weekly"></label>
+        <label text="{{ weeklyAverage }}" style="font-size: 60px;"></label>
+        </StackLayout>
+        <StackLayout class="averages" horizontalAlignment="center" verticalAlignment="center">
+        <label text="Monthly"></label>
+        <label text="{{ monthlyAverage }}" style="font-size: 60px;"></label>
+        </StackLayout>
+
+    </StackLayout>
+
+</StackLayout>

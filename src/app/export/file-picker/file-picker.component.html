@@ -1,0 +1,31 @@
+
+<GridLayout rows="50, 110, 100, auto, auto" style="background-color: white;">
+
+    <label row="0" text="Import File:" 
+            horizontalAlignment="center" 
+            verticalAlignment="center"
+            style="width: 90%; text-align: center; font-size: 18px;"></label>
+    <StackLayout row="1" horizontalAlignment="center" verticalAlignment="center" 
+            style="background-color: white; width: 90%;">
+        <TextField 
+                [(ngModel)]='pathInput'
+                hint="/FULL/PATH/TO/data.json" 
+                style="text-align: center; font-size: 14px;"></TextField>
+        <label text="Success!" class="nt-icon fas" *ngIf="importSuccess"
+                style="text-align: center; font-size: 14px; color: rgb(75, 145, 75);"></label>
+        <label text="&#xf058;" class="nt-icon fas" *ngIf="importSuccess"
+                style="text-align: center; font-size: 18px; color: rgb(75, 145, 75);"></label>
+        <label text="Error. Your file was not imported." class="nt-icon fas" *ngIf="importFail"
+                style="text-align: center; font-size: 14px; color: rgb(131, 42, 36);"></label>
+        <label text="&#xf119;" class="nt-icon fas" *ngIf="importFail"
+                style="text-align: center; font-size: 18px; color: rgb(131, 42, 36);"></label>
+    </StackLayout>
+    <StackLayout row="2" orientation="horizontal" 
+                horizontalAlignment="center" verticalAlignment="top" 
+                style="background-color: white; width: 90%; padding-top: 20px;">
+        <Button text="Import" (tap)="importData()" 
+                style="width: 230px; font-size: 14px;"></Button>
+        <Button text="Close" (tap)="close('Cancel')" 
+                style="width: 230px; font-size: 14px;"></Button>
+    </StackLayout>
+  </GridLayout>

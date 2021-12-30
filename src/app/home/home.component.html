@@ -1,28 +1,48 @@
 <ActionBar class="action-bar">
   <NavigationButton visibility="hidden"></NavigationButton>
-  <GridLayout columns="50, *">
-    <Label class="action-bar-title" text="Home" colSpan="2"></Label>
+  <GridLayout columns="*, *">
+    <Label columns="0" class="fas navBar" text="&#xf70c;" (tap)="navRun()"></Label>
+    <Label column ="1" class="fas navBar" text="&#xf073;" (tap)="navCalendar()"></Label>
 
-    <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
   </GridLayout>
 </ActionBar>
 
-<GridLayout class="page__content" rows="180, 230, 150, 70, auto" >
-   <label row="0" text="How many {{ units }} did you run today?" 
-            horizontalAlignment="center" verticalAlignment="bottom"
-            textWrap="true" style="width: 80%; text-align: center; font-size: 30px;"></label>
+<ScrollView (scroll)="onScroll($event)">
+  <StackLayout>
 
-    <TextField row="1" [(ngModel)]="distanceInput"
-                style="font-size: 100px; text-align: center;
-                width: 30%; background-color: #4d438f; color: white"></TextField>
-    
-    <StackLayout row="2" orientation="horizontal" horizontalAlignment="center" verticalAlignment="center">
-      <label text="mi" style="font-size: 12px; padding-top: 55px"></label>
-      <Switch color="#c4614f" backgroundColor="white" offBackgroundColor="white" 
-              horizontalAlignment="center" ></Switch>
-      <label text="km" style="font-size: 12px; padding-top: 55px"></label>
-    </StackLayout>
-   
-    <Button row="3" text="Submit" style="width: 40%; font-size: 30px;" ></Button>
+    <GridLayout class="page__content" rows="320, 230, 150, 30">
+      <StackLayout row="0" horizontalAlignment="center"  verticalAlignment="bottom">
+        <StackLayout horizontalAlignment="center"  verticalAlignment="bottom"></StackLayout>
+        <label text="How many" class="homeTitle" textWrap="true" ></label>
+        <label text="{{ unit }}" class="homeTitle" textWrap="true" 
+               style="font-size: 50px;" (tap)="titleTap('unit')"></label>
+        <label text="did you" class="homeTitle" textWrap="true" ></label>
+        <label text="{{ activity }}" (tap)="titleTap('activity')" class="homeTitle" textWrap="true"  style="font-size: 50px;"></label>
+        <label text="today?" class="homeTitle" textWrap="true" ></label>
+      </StackLayout>
 
-</GridLayout>
+      <TextField  row="1" class="distanceInput" [(ngModel)]="distanceInput"
+                    style="font-size: 110px; text-align: center; width: 35%;"></TextField>
+      
+      <Label row="2" verticalAlignment="center" class="nt-icon fas homeSubmit" text="&#xf058;" (tap)="submitEntry()"></Label>
+
+    </GridLayout> 
+
+    <GridLayout class="page__content" rows="*, *"  >
+        <!-- <Calendar #calendar row="5"></Calendar>  -->
+        <ng-template #calendar row="0"></ng-template>
+
+        <ActivityIndicator row="0" [busy]="isBusy" color="#d9c564" width="70" height="70"></ActivityIndicator>
+
+        <StackLayout row="1" orientation="horizontal" horizontalAlignment="left" verticalAlignment="center">
+            <label text="mi" style="font-size: 12px; padding-left: 10%;" verticalAlignment="center"></label>
+            <Switch (checkedChange)="onSwitchUnitChange($event)" [checked]="unitKm"
+                    color="#c4614f" backgroundColor="white" offBackgroundColor="white" 
+                    horizontalAlignment="center" ></Switch>
+            <label text="km" style="font-size: 12px;" verticalAlignment="center"></label>
+            <button text="today" (tap)="resetCalendar()"></button> 
+        </StackLayout>
+    </GridLayout>
+
+  </StackLayout>
+</ScrollView>
