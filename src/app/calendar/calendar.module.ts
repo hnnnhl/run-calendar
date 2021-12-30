@@ -3,12 +3,13 @@ import { NativeScriptCommonModule } from '@nativescript/angular'
 import { CalendarComponent } from './calendar.component'
 import { AveragesComponent } from './averages/averages.component'
 import { MonthComponent } from './month/month.component'
-
+import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular";
 
 
 @NgModule({
   imports: [
-    NativeScriptCommonModule],
+    NativeScriptCommonModule,
+    NativeScriptUIListViewModule],
   exports: [
     CalendarComponent
   ],

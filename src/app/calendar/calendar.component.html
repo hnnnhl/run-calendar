@@ -1,5 +1,16 @@
-<ScrollView orientation="horizontal" (swipe)="onSwipe($event)" (scroll)="onScroll($event)" > 
+<!-- <ScrollView orientation="horizontal" (swipe)="onSwipe($event)" (scroll)="onScroll($event)" > 
   <StackLayout orientation="horizontal"> 
        <Month *ngFor="let monthTiles of monthSet" [daysOfMonth]="monthTiles" ></Month>
    </StackLayout> 
 </ScrollView>
+ -->
+
+<GridLayout tkExampleTitle tkToggleNavButton>
+  <RadListView [items]="monthSet">
+      <ng-template tkListItemTemplate let-item="item">
+          <StackLayout orientation="horizontal">
+            <Month [daysOfMonth]="item" ></Month>
+          </StackLayout>
+      </ng-template>
+  </RadListView>
+</GridLayout>
