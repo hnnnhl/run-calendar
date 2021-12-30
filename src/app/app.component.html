@@ -1,51 +1,6 @@
-<!--
-RadSideDrawer is a UI component part of the Progress NativeScript UI set of components.
-Learn more about the RadSideDrawer UI component and how it can be customized in this documentation article:
-https://docs.nativescript.org/angular/ui/professional-ui-components/ng-SideDrawer/getting-started
--->
-<RadSideDrawer [drawerTransition]="sideDrawerTransition">
-  <GridLayout tkDrawerContent rows="auto, *" class="nt-drawer__content">
-    <StackLayout row="0" class="nt-drawer__header" orientation="horizontal" horizontalAlignment="center" verticalAlignment="center">
-      <Label style="color: rgb(75, 75, 75); font-size: 40px; padding-top: 40px;" text="&#xf6d3;" class="nt-icon fas"></Label>
-      <Label style="color: rgb(75, 75, 75); font-size: 60px;" text="&#xf70c;" class="nt-icon fas"></Label>
-    </StackLayout>
-
-    <ScrollView row="1" class="nt-drawer__body">
-      <StackLayout>
-        <GridLayout
-          columns="auto, *"
-          class="nt-drawer__list-item"
-          [class.-selected]="isComponentSelected('/home')"
-          (tap)="onNavItemTap('/home')"
-        >
-          <Label style="color: white; font-size: 15px;" col="0" text="&#xf015;" class="nt-icon fas"></Label>
-          <Label style="color: white; font-size: 15px;" col="1" text="Home" class="p-r-10"></Label>
-        </GridLayout>
-
-        <GridLayout
-          columns="auto, *"
-          class="nt-drawer__list-item"
-          [class.-selected]="isComponentSelected('/calendar')"
-          (tap)="onNavItemTap('/calendar')"
-        >
-          <Label style="color: white; font-size: 15px;"  col="0" text="&#xf073;" class="nt-icon far"></Label>
-          <Label style="color: white; font-size: 15px;"  col="1" text="Calendar" class="p-r-10"></Label>
-        </GridLayout>
-
-        <GridLayout
-          columns="auto, *"
-          class="nt-drawer__list-item"
-          [class.-selected]="isComponentSelected('/export')"
-          (tap)="onNavItemTap('/export')"
-        >
-          <Label style="color: white; font-size: 15px;" col="0" text="&#xf085;" class="nt-icon fas"></Label>
-          <Label style="color: white; font-size: 15px;" col="1" text="More" class="p-r-10"></Label>
-        </GridLayout>
-      </StackLayout>
-    </ScrollView>
-  </GridLayout>
-
   <GridLayout tkMainContent>
     <page-router-outlet></page-router-outlet>
   </GridLayout>
-</RadSideDrawer>
+
+>
+>

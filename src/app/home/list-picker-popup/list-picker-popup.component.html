@@ -1,0 +1,6 @@
+
+<StackLayout>
+        <ListPicker #picker class="listPicker" [items]="list" [selectedIndex]="list.indexOf(this.lastSelected)" 
+        (selectedIndexChange)="onSelectedIndexChanged($event)"></ListPicker>
+        <Label class="nt-icon fas listPickerSubmit" text="&#xf058;" (tap)="close(list[picker.selectedIndex])"></Label>
+</StackLayout>
