@@ -1,6 +1,7 @@
 
         <GridLayout columns="*, *, *, *, *, *, *" rows="auto, auto, *, *, *, *, *, *" 
-                    style="height: 640; width: 375; margin-bottom: 10; margin-left: 20; margin-right: 20">
+                    style="height: 640; width: 375; margin-bottom: 10; margin-left: 10; margin-right: 10"
+                    class="backwardsFade">
             <label row="0" colSpan="7" text="{{ daysOfMonth[0].month }} {{daysOfMonth[0].year}}" style="font-size: 14px;" horizontalAlignment="center"></label>
 
             <label row="1" column="0" text="Sun" style="font-size: 12px; color: white" horizontalAlignment="center"></label>
@@ -11,13 +12,18 @@
             <label row="1" column="5" text="Fri" style="font-size: 12px; color: white" horizontalAlignment="center"></label>
             <label row="1" column="6" text="Sat" style="font-size: 12px; color: white" horizontalAlignment="center"></label>
 
-            <GridLayout rows="auto, *" style="margin: 4px" *ngFor="let item of daysOfMonth" [row]="item.row" [column]="item.column"
-                        [ngClass]="getDateStyle(item)">
-                <label  textWrap=true text="{{ item.date.getDate() }}" horizontalAlignment="right"
+<!--             <GridLayout rows="auto, *" style="margin: 4px" *ngFor="let item of daysOfMonth" [row]="item.row" [column]="item.column"
+                        [ngClass]="getDateStyle(item)" (tap)="dayTap(item)">
+                <label  textWrap=true text="{{ item.date.getDate() }}" horizontalAlignment="right" verticalAlignment="top"
                         [ngClass]="getDateStyle(item)"></label>
-                <label *ngIf="showTileDistance(item.date)" text="{{ polishDistance(item.distanceData.distance) }}" 
+                <label *ngIf="showTileDistance(item.date)" 
+                        [text]="entriesService.polishDistance(item.distances.totalRunDistance+item.distances.totalWalkDistance)" 
                         style="font-size: 18px; margin-top: 40%;" 
                         [ngClass]="getDistanceStyle(item)" verticalAlignment="center"></label>
             </GridLayout> 
-       
+        -->
+            <ng-template #tiles >
+
+            </ng-template>
+
         </GridLayout>

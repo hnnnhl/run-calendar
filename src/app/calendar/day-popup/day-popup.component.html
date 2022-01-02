@@ -1,0 +1,17 @@
+
+<StackLayout class="dayPopup" >
+        <Label class="dateTitle" [text]="day"></Label>
+        <Label text="Entries:"></Label>
+        <Label *ngIf="!(entries.length > 0)" text="No entries for this day."></Label>
+        <ListView [items]="entries" height="500px">
+                <ng-template let-entry="item">
+                        <Label [text]="generateEntryString(entry)" (tap)="updateEntry(entry)"></Label>
+                </ng-template>
+        </ListView>
+        <StackLayout class="dayPopup" orientation="horizontal" horizontalAlignment="center">
+                <Label class="fas addIcon" *ngIf="!future" text="&#xf271;" (tap)="addEntry()"></Label>
+                <Label class="fas starIcon" *ngIf="future" text="&#xf005;" ></Label>
+                <Label class="fas gearIcon" text="&#xf013;" (tap)="pickUnits()"></Label>
+        </StackLayout>
+        <Label class="far closeIcon" text="&#xf410;" (tap)="close()"></Label>
+</StackLayout>

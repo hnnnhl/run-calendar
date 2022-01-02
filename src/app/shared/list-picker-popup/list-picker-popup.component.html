@@ -1,6 +1,7 @@
 
 <StackLayout>
+        <Label *ngIf="prompt" class="listPicker prompt" [text]="prompt"></Label>
         <ListPicker #picker class="listPicker" [items]="list" [selectedIndex]="list.indexOf(this.lastSelected)" 
         (selectedIndexChange)="onSelectedIndexChanged($event)"></ListPicker>
-        <Label class="nt-icon fas listPickerSubmit" text="&#xf058;" (tap)="close(list[picker.selectedIndex])"></Label>
+        <Label class="nt-icon fas listPicker submitCheck" text="&#xf058;" (tap)="close(list[picker.selectedIndex])"></Label>
 </StackLayout>

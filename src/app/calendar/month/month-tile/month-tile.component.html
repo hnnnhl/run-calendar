@@ -1,0 +1,10 @@
+<GridLayout [row]="tile.row" [column]="tile.column" rows="auto, *" style="margin: 4px"
+            [ngClass]="getDateStyle()" (tap)="dayTap()">
+    <label  textWrap=true text="{{ tile.date.getDate() }}" horizontalAlignment="right" verticalAlignment="top"
+            [ngClass]="getDateStyle()"></label>
+    <label *ngIf="showTileDistance()" 
+            [text]="totalDistance" 
+            class="backwardsFade"
+            style="font-size: 18px; margin-top: 40%;" 
+            [ngClass]="getDistanceStyle()" verticalAlignment="center"></label> -->
+</GridLayout> 

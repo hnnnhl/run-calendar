@@ -1,19 +1,26 @@
-import { Injectable } from '@angular/core';
-import { DistanceData } from './data.model';
-import { knownFolders, Folder, File, path } from "@nativescript/core/file-system";
-import { Variable } from '@angular/compiler/src/render3/r3_ast';
-import { variable } from '@angular/compiler/src/output/output_ast';
-
+import { Injectable } from "@angular/core";
+import { DistanceData, DistanceDataEntry } from "./data.model";
+import {
+  knownFolders,
+  Folder,
+  File,
+  path,
+} from "@nativescript/core/file-system";
+import { Variable } from "@angular/compiler/src/render3/r3_ast";
+import { variable } from "@angular/compiler/src/output/output_ast";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class DataService {
   private _storage = require("nativescript-android-fs");
   private _dataFolder = "/Android/data/org.nativescript.RunCalendar";
   private _dataFile = "data.txt";
 
-  private folderPath: string = path.join(knownFolders.documents().path, "RunCalendarData");
+  private folderPath: string = path.join(
+    knownFolders.documents().path,
+    "RunCalendarData"
+  );
   private folder: Folder = <Folder>Folder.fromPath(this.folderPath);
   private filePath: string = path.join(this.folder.path, "data.json");
   private storageFile: File = File.fromPath(this.filePath);
@@ -22,9 +29,11 @@ export class DataService {
 
   private _unit: string = "mi";
 
+  private _ID: number;
+
   constructor() {
-      this._AllData = this.readData();
-      console.log('reading files: '+this.storageFile.readTextSync());
+    this._AllData = this.readData();
+    console.log("reading files: " + this.storageFile.readTextSync());
   }
 
   getAllData(): DistanceData[] {
@@ -32,79 +41,121 @@ export class DataService {
   }
 
   public set unit(unitChange: string) {
-    if (unitChange === 'miles' || unitChange === 'mi'){
-      this._unit = 'mi';
+    if (unitChange === "miles" || unitChange === "mi") {
+      this._unit = "mi";
     }
-    if (unitChange === 'kilometers' || unitChange === 'km'){
-      this._unit = 'km';
+    if (unitChange === "kilometers" || unitChange === "km") {
+      this._unit = "km";
     }
   }
 
   public get unit() {
-    if (this._unit === 'mi')
-      { return 'miles';}
-    else
-      { return 'kilometers';}
+    if (this._unit === "mi") {
+      return "miles";
+    } else {
+      return "kilometers";
+    }
   }
 
   public convertToMi(km: number): number {
-    return km * 0.621371
+    return km * 0.621371;
   }
 
   public convertToKm(mi: number): number {
-    return mi * 1.60934
+    return mi * 1.60934;
   }
 
   public readData(): DistanceData[] {
     var readDistanceData: DistanceData[] = [];
 
-    try{
-      if(JSON.parse(this.storageFile.readTextSync())){
-
-        const readData: DistanceData[] = JSON.parse(this.storageFile.readTextSync());
-        readData.forEach(data => {
+    try {
+      if (JSON.parse(this.storageFile.readTextSync())) {
+        const readData: DistanceData[] = JSON.parse(
+          this.storageFile.readTextSync()
+        );
+        readData.forEach((data) => {
           var dateString: string = data.date.toString();
           var parsedDate: Date = new Date(dateString);
-          readDistanceData.push({date: parsedDate, distance: data.distance});
+          var entryDateString: string = data.entryDate.toString();
+          var parsedEntryDate: Date = new Date(entryDateString);
+          readDistanceData.push({
+            id: data.id,
+            date: parsedDate,
+            distance: data.distance,
+            activity: data.activity,
+            originalUnit: data.originalUnit,
+            originalEntry: data.originalEntry,
+            entryDate: parsedEntryDate,
+          });
         });
-
-      }}
-    catch (e){
-      console.log("read error: "+e);
+      }
+    } catch (e) {
+      console.log("read error: " + e);
     }
 
     return readDistanceData;
   }
 
-  public addEntry(entry: DistanceData) {
-    console.log('dataservice entry'+ entry.distance);
-    if (this._unit === 'mi'){
-      entry.distance = this.convertToKm(entry.distance);
+  public addEntry(entry: DistanceDataEntry) {
+    let kmDistance: number = entry.distance;
+    let entryUnit: string;
+
+    if (entry.unit) {
+      entryUnit = entry.unit;
+    } else {
+      entryUnit = this.unit;
     }
-    console.log('converted'+ entry.distance);
-    this._AllData.push(entry);
+    console.log("dataserrvice entry unit " + entry.unit);
+    if (entryUnit === "mi" || entryUnit === "miles") {
+      kmDistance = this.convertToKm(entry.distance);
+    }
+
+    const fullEntry: DistanceData = {
+      id: this.generateId(),
+      date: entry.date,
+      distance: kmDistance,
+      activity: entry.activity,
+      originalUnit:
+        entryUnit === "kilometers" || entryUnit === "km" ? "km" : "mi",
+      originalEntry: entry.distance,
+      entryDate: new Date(),
+    };
+
+    console.log(
+      fullEntry.id + "//" + fullEntry.date + "//" + fullEntry.distance
+    );
+
+    this._AllData.push(fullEntry);
     this.save();
   }
 
-  public save(){
+  public deleteEntry(entry: DistanceData) {
+    let entryIndex = this._AllData.findIndex((x) => x.id === entry.id);
+    let deletedEntry = this._AllData.splice(entryIndex, 1);
+    console.log(
+      "entry deleted: " + deletedEntry[0].date + "//id: " + deletedEntry[0].id
+    );
+    this.save();
+  }
+
+  public save() {
     var AllDataString: string = JSON.stringify(this._AllData);
     this.storageFile.writeTextSync(AllDataString);
   }
 
-  public deleteAllData(){
+  public deleteAllData() {
     this.storageFile.removeSync();
     this._AllData = [];
   }
 
-  public getEarliestEntryDay(): Date{
-    
-    if (this._AllData.length > 0){
+  public getEarliestEntryDay(): Date {
+    if (this._AllData.length > 0) {
       var dateOrderedData: DistanceData[] = this._AllData.sort((a, b) => {
         if (a.date > b.date) {
-            return 1;
+          return 1;
         }
         if (a.date < b.date) {
-            return -1;
+          return -1;
         }
         return 0;
       });
@@ -112,8 +163,6 @@ export class DataService {
     } else {
       return new Date();
     }
-
-    
   }
 
   /* public save(){
@@ -126,32 +175,33 @@ export class DataService {
  
   }
  */
-  averageData(startDate: Date, endDate: Date): {average: number, totalDistance: number, dayDifference: number}{
-
-      if (this._AllData.length > 0){
+  averageData(
+    startDate: Date,
+    endDate: Date
+  ): { average: number; totalDistance: number; dayDifference: number } {
+    if (this._AllData.length > 0) {
       // Iterating through AllData and pushing only the data within the startDate and endDate to dateFilteredData
       var datefilteredData: DistanceData[] = [];
 
-      if (startDate < this.getEarliestEntryDay()){
+      if (startDate < this.getEarliestEntryDay()) {
         startDate = this.getEarliestEntryDay();
       }
 
-      startDate.setHours(0,0,0,0);
-      endDate.setHours(0,0,0,0);
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(0, 0, 0, 0);
 
-          this._AllData.forEach(data => {
+      this._AllData.forEach((data) => {
+        //Copying data to a variable to set the Date value to midnight
+        var tempData = { ...data };
+        tempData.date.setHours(0, 0, 0, 0);
 
-            //Copying data to a variable to set the Date value to midnight
-            var tempData = {...data};
-            tempData.date.setHours(0,0,0,0);
-
-            if ((startDate <= tempData.date) && (tempData.date <= endDate)){
-              datefilteredData.push(data);
-            }
-          });
+        if (startDate <= tempData.date && tempData.date <= endDate) {
+          datefilteredData.push(data);
+        }
+      });
 
       var distanceSum = 0;
-      datefilteredData.forEach(data => {
+      datefilteredData.forEach((data) => {
         distanceSum += data.distance;
       });
 
@@ -163,32 +213,46 @@ export class DataService {
         dayDiff = 1;
       }
 
-      return {average: (distanceSum/dayDiff), totalDistance: distanceSum, dayDifference: dayDiff};
-    }
-    else {
-      return {average: 0, totalDistance: 0, dayDifference: 0}
+      return {
+        average: distanceSum / dayDiff,
+        totalDistance: distanceSum,
+        dayDifference: dayDiff,
+      };
+    } else {
+      return { average: 0, totalDistance: 0, dayDifference: 0 };
     }
   }
 
+  generateId(): number {
+    if (this._AllData && this._AllData.length > 0) {
+      let lastID: number = this._AllData[this._AllData.length - 1].id;
+      this._ID = lastID + 1;
+    } else {
+      this._ID = 1000000;
+    }
+
+    return this._ID;
+  }
+
   // Remove later. For testing the contents of the data.json file.
-  public testPrint(): string{
-    var testString = '';
-    this._AllData.forEach(x =>{
-      testString += "//"+ x.date + " " + x.distance+" //";
+  public testPrint(): string {
+    var testString = "";
+    this._AllData.forEach((x) => {
+      testString +=
+        "//" + x.date + " " + x.distance + " //" + x.activity + " //";
     });
 
     return testString;
   }
 
-    // Remove later. For testing the contents of the data.json file.
-  public testRead(): string{
-      var testString = this.storageFile.readTextSync();
+  // Remove later. For testing the contents of the data.json file.
+  public testRead(): string {
+    var testString = this.storageFile.readTextSync();
     /*   const dataFileContents = this._storage.read(this._dataFolder, this._dataFile);
       if(dataFileContents){
         testString = dataFileContents;
       } */
-  
-      return testString;
-    }
 
+    return testString;
+  }
 }

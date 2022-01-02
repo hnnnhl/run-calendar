@@ -1,0 +1,27 @@
+
+<GridLayout class="dayPopup"  verticalAlignment="center"
+        rows="auto, 50, 60, 60, 60, 60, auto" 
+        columns="*, 100, 50, 100, *" >
+
+        <Label row="0" colspan="5" class="popup" [text]="dateString" verticalAlignment="center"
+                class="dateTitle"></Label>
+        <Label row="1" colspan="5" class="popup" text="Add entry:"  verticalAlignment="center"></Label>
+                
+        <Label row="2" column="1" text="Time:" verticalAlignment="center"></Label>
+        <Label row="2" column="3" [text]="timeString" (tap)="selectTime()" verticalAlignment="center"></Label>
+                
+        <Label row="3" column="1" text="Activity:" verticalAlignment="center"></Label>
+        <Label row="3" column="3"[text]="activity" (tap)="selectActivity()" verticalAlignment="center"></Label>
+
+        <Label row="4" column="1" text="Distance:" verticalAlignment="center"></Label>
+        <TextField row="4" column="3" style="width: 170px; font-size: 18px; color: white; text-align: center; " 
+                verticalAlignment="center" [(ngModel)]="distance" keyboardType="number"></TextField>
+
+        <Label row="5" column="1" text="Units:" verticalAlignment="center"></Label>
+        <Label row="5" column="3" [text]="unit" (tap)="selectUnit()" verticalAlignment="center"></Label>
+
+        <Label row="6" column="2" class="nt-icon fas submitCheck popup" verticalAlignment="center"
+                text="&#xf058;" (tap)="submitEntry()"></Label>
+
+        
+</GridLayout>

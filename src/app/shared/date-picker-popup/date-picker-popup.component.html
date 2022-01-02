@@ -1,0 +1,19 @@
+
+<StackLayout style="background-color:white" >
+
+    <StackLayout height="400px" style="background-color:white" >
+    
+        <DatePicker year="1980" month="4" day="20"
+            [minDate]="minDate" [maxDate]="maxDate"
+            (dateChange)="onDateChanged($event)" 
+            (dayChange)="onDayChanged($event)" 
+            (monthChange)="onMonthChanged($event)" 
+            (yearChange)="onYearChanged($event)" 
+            (loaded)="onDatePickerLoaded($event)"
+            verticalAlignment="center">
+        </DatePicker>
+    </StackLayout>    
+
+        <Label class="nt-icon fas listPickerSubmit" style="background-color:white" text="&#xf058;" (tap)="close(time)"></Label>
+
+</StackLayout>

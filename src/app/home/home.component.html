@@ -21,14 +21,14 @@
         <label text="today?" class="homeTitle" textWrap="true" ></label>
       </StackLayout>
 
-      <TextField  row="1" class="distanceInput" [(ngModel)]="distanceInput"
+      <TextField  row="1" class="distanceInput" [(ngModel)]="distanceInput" keyboardType="number"
                     style="font-size: 110px; text-align: center; width: 35%;"></TextField>
       
       <Label row="2" verticalAlignment="center" class="nt-icon fas homeSubmit" text="&#xf058;" (tap)="submitEntry()"></Label>
 
     </GridLayout> 
 
-    <GridLayout class="page__content" rows="*, *"  >
+    <GridLayout rows="*, *"  horizontalAlignment="center">
         <!-- <Calendar #calendar row="5"></Calendar>  -->
         <ng-template #calendar row="0"></ng-template>
 
@@ -40,7 +40,7 @@
                     color="#c4614f" backgroundColor="white" offBackgroundColor="white" 
                     horizontalAlignment="center" ></Switch>
             <label text="km" style="font-size: 12px;" verticalAlignment="center"></label>
-            <button text="today" (tap)="resetCalendar()"></button> 
+            <button class="fas todayIcon" text="&#xf783;" (tap)="resetCalendar()"></button> 
         </StackLayout>
     </GridLayout>
 

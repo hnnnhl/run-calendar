@@ -1,5 +1,16 @@
 export interface DistanceData {
-    date: Date,
-    dateString?: string, // Date in parseable timestamp
-    distance: number //in km
+  id: number;
+  date: Date;
+  distance: number; //in km
+  activity: string;
+  originalEntry: number;
+  originalUnit: string;
+  entryDate: Date;
+}
+
+export interface DistanceDataEntry {
+  date: Date;
+  distance: number; //in km
+  activity: string;
+  unit?: string;
 }

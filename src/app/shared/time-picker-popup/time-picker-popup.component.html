@@ -1,0 +1,18 @@
+
+<StackLayout style="background-color:white" >
+
+    <StackLayout height="400px" style="background-color:white" >
+    
+            <TimePicker 
+                [hour]="hour"
+                [minute]="minute"
+                maxHour="23"
+                maxMinute="59"
+                minuteInterval="1"
+                (timeChange)="onTimeChanged($event)">
+            </TimePicker>
+    </StackLayout>    
+
+        <Label class="nt-icon fas listPickerSubmit" style="background-color:white" text="&#xf058;" (tap)="close(time)"></Label>
+
+</StackLayout>

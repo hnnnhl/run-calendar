@@ -1,92 +1,122 @@
-import { Component, Input, OnInit } from '@angular/core'
-import { ObservableArray } from '@nativescript/core';
-import { DistanceData } from '~/app/data/data.model';
-import { DataService } from '~/app/data/data.service';
-import { MonthMap, MonthTileObject } from '../calendar-data.model';
-import { CalendarEntriesService } from '../calendar-entries.service';
-
-
+import {
+  AfterViewInit,
+  Component,
+  ComponentFactory,
+  ComponentFactoryResolver,
+  ComponentRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+  ViewContainerRef,
+} from "@angular/core";
+import { ModalDialogOptions, ModalDialogService } from "@nativescript/angular";
+import { ObservableArray, SwipeGestureEventData } from "@nativescript/core";
+import { DistanceData } from "~/app/data/data.model";
+import { DataService } from "~/app/data/data.service";
+import { ListPickerPopupComponent } from "~/app/shared/list-picker-popup/list-picker-popup.component";
+import {
+  ActivitySummary,
+  MonthMap,
+  MonthTileObject,
+} from "../calendar-data.model";
+import { CalendarEntriesService } from "../calendar-entries.service";
+import { DayPopupComponent } from "../day-popup/day-popup.component";
+import { MonthTileComponent } from "./month-tile/month-tile.component";
 
 @Component({
-  selector: 'Month',
-  templateUrl: './month.component.html',
+  selector: "Month",
+  templateUrl: "./month.component.html",
 })
-export class MonthComponent implements OnInit {
+export class MonthComponent implements OnInit, AfterViewInit {
+  @Input() month: number;
+  @Input() year: number;
+  @Input() daysOfMonth: MonthTileObject[];
 
-    @Input() month: number;
-    @Input() year: number;
-    @Input() daysOfMonth: MonthTileObject[];
-    daysOfMonthArray: ObservableArray<MonthTileObject>;
+  @ViewChild("tiles", { read: ViewContainerRef }) container: ViewContainerRef;
+  private _factory: ComponentFactory<MonthTileComponent>;
+  public TileInstances: ComponentRef<MonthTileComponent>[];
 
-    public currentMonth: MonthMap;
-   // public currentRow: number = 2;
+  @Output() refreshAll: EventEmitter<boolean> = new EventEmitter();
 
-    public today: Date;
-    public tomorrow: Date;
-    public earliest: Date;
-    //public showTileDistance: boolean;
+  public currentMonth: MonthMap;
+  // public currentRow: number = 2;
 
-    constructor(private _dataService: DataService, private _entriesService: CalendarEntriesService){}
+  public today: Date;
+  public tomorrow: Date;
+  public earliest: Date;
 
-    ngOnInit(): void {
+  constructor(
+    private _dataService: DataService,
+    public entriesService: CalendarEntriesService,
+    private modalService: ModalDialogService,
+    private viewContainerRef: ViewContainerRef,
+    private _resolver: ComponentFactoryResolver
+  ) {}
 
-     if(this.month && this.year){
-            this.daysOfMonth = this._entriesService.setupMonthTiles(this.month, this.year);
+  ngOnInit(): void {
+    if (this.month && this.year) {
+      this.daysOfMonth = this.entriesService.setupMonthTiles(
+        this.month,
+        this.year
+      );
+    } else {
+      // Picking a date in the middle of daysOfMonth to ensure the date is in the primary month
+      this.month = this.daysOfMonth[15].date.getMonth();
+      this.year = this.daysOfMonth[15].date.getFullYear();
+    }
+
+    this.currentMonth = this.entriesService.currentMonth;
+  }
+
+  ngAfterViewInit() {
+    this._factory = this._resolver.resolveComponentFactory(MonthTileComponent);
+    this.refreshTileInstances();
+  }
+
+  refreshTileInstances() {
+    this.TileInstances = [];
+    //this.container.clear();
+
+    this.daysOfMonth.forEach((d) => {
+      const day = this.container.createComponent(this._factory);
+      day.instance.tile = d;
+      day.changeDetectorRef.detectChanges();
+
+      this.TileInstances.push(day);
+
+      day.instance.refreshAll.subscribe((refreshAll) => {
+        if (refreshAll) {
+          console.log("needs refresh");
+          this.refreshAll.emit(true);
         }
-
-      this.currentMonth = this._entriesService.currentMonth;
-
-      this.today = new Date();
-      this.tomorrow = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate()+1);
-      this.earliest = new Date(this._dataService.getEarliestEntryDay().getTime());
-      this.earliest.setDate(this.earliest.getDate()-1);
-      this.earliest.setHours(23, 59, 59);
-
-    }
-
-    showTileDistance(tileDate: Date): boolean{
-      if (this.earliest < tileDate && tileDate < this.tomorrow) {
-        return true;
-      }
-      else {
-        return false;
-      }
-  }
-    
-    polishDistance(distance: number): number{
-      // Distances are stored in km by default
-      // This converts the raw distances into miles if the user has selected miles
-      // and rounds the numbers to display on the calendar
-
-      let conversion: number = distance;
- 
-      if (this._dataService.unit === "mi" || this._dataService.unit === "miles"){
-        conversion = this._dataService.convertToMi(distance);
-      }
-    
-        return parseFloat(conversion.toFixed(1));
-     
-    }
-
-  getDateStyle(tile: MonthTileObject): string{
-    //{'color':item.primaryMonth ? 'white' : '#6e6a73' }
-    if (this._entriesService.sameDay(tile.date, new Date())){
-      return 'monthTile today';
-    }
-    else if (!tile.primaryMonth) {
-      return 'monthTile another';
-    }
-    else {
-      return 'monthTile';
-    }
+      });
+    });
   }
 
-  getDistanceStyle(tile: MonthTileObject): string {
-    if (tile.distanceData.distance != 0) {
-      return 'distance goalMet'
-    }
-    else {
-      return 'distance none'
-    }
+  refreshTile(tileComponent: ComponentRef<MonthTileComponent>) {
+    // Updating tile with new distance
+    // If a date is provided, only updating tile for that date
+    let dateUpdated = tileComponent.instance.tile.date;
+    let dayTile: MonthTileObject = this.daysOfMonth.find((x) =>
+      this.entriesService.sameDay(x.date, dateUpdated)
+    );
+
+    let dayIndex: number = this.daysOfMonth.indexOf(dayTile);
+
+    let distances: ActivitySummary = this.entriesService.groupDataByDay(
+      dateUpdated,
+      dateUpdated
+    )[0];
+
+    this.daysOfMonth[dayIndex].distances = distances;
+
+    tileComponent.instance.tile.distances = distances;
+    tileComponent.changeDetectorRef.detectChanges();
+  }
+
+  sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }

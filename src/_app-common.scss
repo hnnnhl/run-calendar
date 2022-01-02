@@ -4,6 +4,32 @@
 // Place any CSS rules you want to apply on both iOS and Android here.
 // This is where the vast majority of your CSS code goes.
 
+// Animations
+@keyframes fade {
+  from { opacity: 0.5; }
+  to { opacity: 1; }
+}
+
+.backwardsFade {
+  animation-name: fade;
+  animation-duration: .6s;
+  animation-fill-mode: backwards;
+}
+
+ @keyframes rotate {
+  from {
+    transform: rotate(0deg) scale(1) skew(0deg) translate(100px);
+  }
+  to {
+    transform: rotate(0deg) scale(2) skew(0deg) translate(100px);
+  }
+}
+
+
+
+
+
+////
 .Armata {
   font-family: "Armata", "Armata-Regular";
  }
@@ -41,12 +67,23 @@ button {
   font-family: "Armata", "Armata-Regular";
 }
 
+.dateTitle {
+  background-color: white; 
+  color: #301e36}
+
 .homeSubmit {
   color: #6b916b;
   font-size: 60px; 
   text-align: center;
 }
 
+.homeSubmit:active{
+  animation-name: rotate;
+  animation-duration: 3s;
+  animation-iteration-count: 1;
+  animation-timing-function: ease;
+  animation-fill-mode: forwards;
+}
 
 .homeTitle {
   width: 80%; 
@@ -54,23 +91,45 @@ button {
   font-size: 30px;
 }
 
-.listPicker {
+.dayPopup {
   background-color: #413a42;
   color: white;
-  width: 320;
-  height: 150;
   vertical-align: middle;
   border-color: white;
+  font-size: 16px;
 }
 
-.listPickerSubmit {
-  background-color: #453749;
+.popup{
+  background-color: #413a42;
+}
+
+.submitCheck {
   color: #6b916b;
   font-size: 30px; 
   text-align: center;
   padding-top: 50px;
   padding-bottom: 50px;
 }
+
+.listPicker {
+  background-color: white;
+  width: 500;
+  vertical-align: middle;
+  font-size: 16px;
+}
+
+.listPicker.submitCheck {
+  font-size: 30px; 
+  background-color: white;
+}
+
+.listPicker.prompt {
+  color: black;
+  font-family: Helvetica;
+  height: 130px;
+  padding-top: 50px;
+}
+
 
 label.averages {
   width: 88%;
@@ -123,6 +182,39 @@ StackLayout {
   height: 100px
 }
 
+.trashIcon {
+  color: rgb(201, 92, 77);
+  font-size: 20px;
+}
+
+.addIcon {
+  color: #64a574;
+  font-size: 30px;
+  margin: 30px;
+}
+
+.starIcon {
+  color: #cca04e;
+  font-size: 30px;
+  margin: 30px;
+}
+
+.gearIcon {
+  color: #b4b4b4;
+  font-size: 30px;
+  margin: 30px;
+}
+
+.closeIcon {
+  font-size: 30px;
+  margin-bottom: 30px;
+  margin-top: 10px;
+}
+
+.todayIcon {
+  font-size: 30px;
+}
+
 // Font icon class
 .fab {
   font-family: 'Font Awesome 5 Brands', 'fa-brands-400';
@@ -157,11 +249,6 @@ StackLayout {
   }
 }
 
-// Drawer navigation custom styles
-.nt-drawer__header-image {
-  color: const(grey);
-}
-
 
 /// Month Tile Styling
 
@@ -172,21 +259,33 @@ StackLayout {
   }
   
 .monthTile.another {
-  color: #6e6a73;
+  color: #6b6b6b;
   background-color: #382c3f;
   }
   
 .monthTile.today {
-  color: #301e36;
-  background-color: white;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #b4abab;
+  border: solid;
+  border-color: rgb(107, 96, 119);
   }
+
+.monthTile.today Label.date {
+ // background-color: #1f686d;
+  height: 24;
+  width: 100%;
+  text-align: right;
+
+}
   
 .distance {
   font-size: 18px;
   }
   
 .distance.goalMet {
-  color: #54ad90;
+  color: #64a574;
   }
   
 .distance.none {
