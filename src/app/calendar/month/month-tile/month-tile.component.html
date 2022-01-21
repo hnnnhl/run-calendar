@@ -1,10 +1,21 @@
-<GridLayout [row]="tile.row" [column]="tile.column" rows="auto, *" style="margin: 4px"
-            [ngClass]="getDateStyle()" (tap)="dayTap()">
-    <label  textWrap=true text="{{ tile.date.getDate() }}" horizontalAlignment="right" verticalAlignment="top"
-            [ngClass]="getDateStyle()"></label>
-    <label *ngIf="showTileDistance()" 
-            [text]="totalDistance" 
-            class="backwardsFade"
-            style="font-size: 18px; margin-top: 40%;" 
-            [ngClass]="getDistanceStyle()" verticalAlignment="center"></label> -->
-</GridLayout> 
+<!-- <GridLayout [row]="tile.row" [column]="tile.column" (tap)="dayTap()"> -->
+        
+        <GridLayout rows="auto, *" style="margin: 4px" [row]="tile.row" [column]="tile.column" (tap)="dayTap()"
+                [ngClass]="getDateStyle()">
+        <label  textWrap=true text="{{ tile.date.getDate() }}" horizontalAlignment="right" verticalAlignment="top"
+                [ngClass]="getDateStyle()"></label>
+        <label [hidden]="!showTileDistance()" 
+                [text]="totalDistance" 
+                class="backwardsFade"
+                style="font-size: 18px; margin-top: 40%;" 
+                [ngClass]="getDistanceStyle()" verticalAlignment="center"></label>  
+<!--         <label  [hidden]="!showGoal()" 
+                [text]="totalGoalDistance" 
+                class="backwardsFade"
+                style="font-size: 18px; margin-top: 40%;" 
+                class="goal set" verticalAlignment="center"></label>  -->
+        </GridLayout>      
+     
+   <!--      <Label [hidden]="!showGoal()" text=" " height="10" 
+            style="font-size: 12px; background-color: rgb(255, 202, 87); margin: 0; margin-top: 60;"></Label> -->
+<!-- </GridLayout>  -->

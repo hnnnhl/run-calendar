@@ -1,0 +1,14 @@
+
+
+
+<Label [row]="row" [column]="column" [colspan]="colspan" height="2%" [horizontalAlignment]="horizontalAlignment"
+[ngClass]="barClass"></Label>
+
+<Label [hidden]="!((barClass === 'goal-bar lastDay') || (barClass === 'goal-bar singleDay'))" 
+        [row]="row" [column]="column" [text]="text" height="4%" width="20%"
+        style="background-color: #d49712 ; margin-top: 10%; border-radius: 30; font-size: 15px;"></Label>
+<!-- 
+<Label [row]="row" [column]="column" [colspan]="colspan" [text]="text" height="10" [horizontalAlignment]="horizontalAlignment"
+[ngClass]="barClass" style="margin-top: 20;"></Label>
+ -->
+

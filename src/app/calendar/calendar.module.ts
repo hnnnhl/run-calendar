@@ -5,12 +5,16 @@ import { AveragesComponent } from "./averages/averages.component";
 import { MonthComponent } from "./month/month.component";
 import { MonthTileComponent } from "./month/month-tile/month-tile.component";
 import { DayPopupComponent } from "./day-popup/day-popup.component";
-import { EntryEditPopupComponent } from "./day-popup/entry-edit-popup/entry-edit-popup.component";
+import { GoalBarComponent } from "./month/goal-bar/goal-bar.component";
+import { GoalBarControllerComponent } from "./month/goal-bar/goal-bar-controller.component";
 import { DatePipe } from "@angular/common";
 import { SharedModule } from "../shared/shared.module";
+import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular";
 
 @NgModule({
-  imports: [NativeScriptCommonModule, SharedModule],
+  imports: [NativeScriptCommonModule, 
+   // SharedModule, 
+    NativeScriptUIListViewModule],
   exports: [CalendarComponent],
   declarations: [
     CalendarComponent,
@@ -18,7 +22,8 @@ import { SharedModule } from "../shared/shared.module";
     MonthComponent,
     MonthTileComponent,
     DayPopupComponent,
-    EntryEditPopupComponent,
+    GoalBarComponent,
+    GoalBarControllerComponent
   ],
   schemas: [NO_ERRORS_SCHEMA],
   providers: [DatePipe],

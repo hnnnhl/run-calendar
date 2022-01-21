@@ -13,34 +13,32 @@ import { DatePicker } from "@nativescript/core";
   templateUrl: "./date-picker-popup.component.html",
 })
 export class DatePickerPopupComponent implements OnInit {
-  //  private _date: Date;
-  //  public hour: number;
-  // public minute: number;
-
-  time: Date = new Date();
+  public date: Date;
+  public today: Date = new Date();
+  public minDate: Date;
+  public maxDate: Date;
 
   constructor(private _params: ModalDialogParams, private _datepipe: DatePipe) {
-    //  this._date = new Date(this._params.context.date);
-    // this.hour = this._date.getHours();
-    // this.minute = this._date.getMinutes();
+
+    this.date = new Date(this._params.context.date);
+    this.minDate = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate());
+    this.maxDate = new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate());
+
   }
 
   ngOnInit(): void {}
 
-  public close(result: Date) {
-    this._params.closeCallback(result);
+  public close() {
+    this._params.closeCallback(this.date);
   }
-
-  minDate: Date = new Date(1975, 0, 29);
-  maxDate: Date = new Date(2045, 4, 12);
 
   onDatePickerLoaded(args) {
     // const datePicker = args.object as DatePicker;
   }
 
   onDateChanged(args) {
-    console.log("Date New value: " + args.value);
-    console.log("Date value: " + args.oldValue);
+    this.date = args.value;
+    console.log("Date value: " + args.value);
   }
 
   onDayChanged(args) {

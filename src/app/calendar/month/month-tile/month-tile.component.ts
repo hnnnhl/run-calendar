@@ -19,13 +19,13 @@ import { DayPopupComponent } from "../../day-popup/day-popup.component";
 export class MonthTileComponent implements OnInit {
   @Input() tile: MonthTileObject;
   @Output() refreshAll: EventEmitter<boolean> = new EventEmitter();
-  @Output() refreshTile: EventEmitter<boolean> = new EventEmitter();
 
   public today: Date;
   public tomorrow: Date;
   public earliest: Date;
 
   public totalDistance: number;
+/*   public totalGoalDistance: number; */
 
   constructor(
     private _dataService: DataService,
@@ -45,22 +45,55 @@ export class MonthTileComponent implements OnInit {
     this.earliest.setDate(this.earliest.getDate() - 1);
     this.earliest.setHours(23, 59, 59);
 
+    if (!this.tile.distances) {
+      this.tile.distances = {
+        date: this.tile.date,
+        totalWalkDistance: 0,
+        totalRunDistance: 0,
+      };
+    }
+
+/*     if (!this.tile.goals) {
+      this.tile.goals = {
+        date: this.tile.date,
+        totalWalkDistance: 0,
+        totalRunDistance: 0,
+      };
+    } */
+
     this.totalDistance = this.entriesService.polishDistance(
       this.tile.distances.totalRunDistance +
         this.tile.distances.totalWalkDistance
     );
+
+/*     this.totalGoalDistance = this.entriesService.polishDistance(
+      this.tile.goals.totalRunDistance +
+        this.tile.goals.totalWalkDistance
+    ); */
+
+    
+
   }
 
   public showTileDistance(): boolean {
     if (this.earliest < this.tile.date && this.tile.date < this.tomorrow) {
       return true;
-    } else {
+    } 
+    else {
       return false;
     }
   }
-
+  
+/*   public showGoal(): boolean {
+    if (this.today < this.tile.date && this.totalGoalDistance > 0) {
+      return true;
+    } 
+    else {
+      return false;
+    }
+  }
+ */
   public getDateStyle(): string {
-    //{'color':item.primaryMonth ? 'white' : '#6e6a73' }
     if (this.entriesService.sameDay(this.tile.date, new Date())) {
       return "monthTile today date";
     } else if (!this.tile.primaryMonth) {
@@ -81,22 +114,8 @@ export class MonthTileComponent implements OnInit {
     }
   }
 
-  dayTap() {
-    let earliestEntryDay = this._dataService.getEarliestEntryDay();
-    let originalDistance: ActivitySummary;
-    if (this.tile.distances) {
-      originalDistance = Object.assign({}, this.tile.distances);
-    } else {
-      originalDistance = {
-        date: this.tile.date,
-        totalWalkDistance: 0,
-        totalRunDistance: 0,
-      };
-    }
-
-    let refresh: boolean =
-      !this.entriesService.sameDay(earliestEntryDay, this.tile.date) &&
-      this.tile.date < earliestEntryDay;
+  public dayTap() {
+    let earliestEntryBeforeOpen = this._dataService.getEarliestEntryDay();
 
     let options: ModalDialogOptions = {
       context: { tile: this.tile },
@@ -104,30 +123,71 @@ export class MonthTileComponent implements OnInit {
     };
 
     this.modalService.showModal(DayPopupComponent, options).then(() => {
-      // Getting the tile update
-      this.tile.distances = this.entriesService.groupDataByDay(
-        this.tile.date,
-        this.tile.date
-      )[0];
+          let earliestEntryAfterOpen = this._dataService.getEarliestEntryDay();
 
-      if (!this.tile.distances) {
-        this.tile.distances = {
-          date: this.tile.date,
-          totalWalkDistance: 0,
-          totalRunDistance: 0,
-        };
+          let refreshEntryDelete: boolean =
+            !this.entriesService.sameDay(earliestEntryAfterOpen, this.tile.date) &&
+            this.tile.date < earliestEntryAfterOpen;
+          
+          let refreshEntryAdd: boolean =
+            !this.entriesService.sameDay(earliestEntryBeforeOpen, this.tile.date) &&
+            this.tile.date < earliestEntryBeforeOpen;
 
-        console.log("tile distances empty  " + this.tile.distances);
-      }
+          let distancesUpdated: boolean = this._dataService.distancesUpdated; 
+          let goalsUpdated: boolean = this._dataService.goalsUpdated;
 
-      if (refresh && originalDistance != this.tile.distances) {
-        this.refreshAll.emit(true);
-      } else if (originalDistance != this.tile.distances) {
-        this.totalDistance = this.entriesService.polishDistance(
-          this.tile.distances.totalRunDistance +
-            this.tile.distances.totalWalkDistance
-        );
-      }
-    });
-  }
+          if (refreshEntryDelete || refreshEntryAdd && (distancesUpdated || goalsUpdated)) {
+              this.refreshAll.emit(true);   
+          } 
+          else if (distancesUpdated) {
+            let distanceGroup: ActivitySummary = this.entriesService.groupDataByDay(
+              this.tile.date,
+              this.tile.date
+            )[0];
+      
+            if (distanceGroup) {
+              this.tile.distances = distanceGroup;
+            } 
+            else {
+              this.tile.distances = {
+              date: this.tile.date,
+              totalWalkDistance: 0,
+              totalRunDistance: 0,
+              }
+            }
+
+            this.totalDistance = this.entriesService.polishDistance(
+              this.tile.distances.totalRunDistance +
+                this.tile.distances.totalWalkDistance
+            );
+          }
+          else if (goalsUpdated) {
+
+            let goalDayEnd: Date = new Date(this.tile.date.getTime());
+            goalDayEnd.setDate(goalDayEnd.getDate()+1);
+            goalDayEnd.setMilliseconds(goalDayEnd.getMilliseconds()-1);
+      
+            let goalGroup: ActivitySummary = this.entriesService.groupGoalsByDay(
+              this.tile.date,
+              goalDayEnd
+            )[0];
+
+            if (goalGroup) {
+              this.tile.goals = goalGroup;
+            }
+            else {
+              this.tile.goals = {
+              date: this.tile.date,
+              totalWalkDistance: 0,
+              totalRunDistance: 0,
+              }
+            }
+      /*       this.totalGoalDistance = this.entriesService.polishDistance(
+              this.tile.goals.totalRunDistance +
+                this.tile.goals.totalWalkDistance
+            ); */
+        
+        }
+      }); 
+    }
 }

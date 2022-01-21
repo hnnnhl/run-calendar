@@ -11,13 +11,14 @@ import {
   ModalDialogService,
 } from "@nativescript/angular";
 import { Page } from "@nativescript/core";
-import { DistanceData } from "~/app/data/data.model";
+import { DistanceData, Goal, DataObject } from "~/app/data/data.model";
 import { DataService } from "~/app/data/data.service";
-import { EntryAddPopupComponent } from "~/app/shared/entry-add-popup/entry-add-popup.component";
+import { EntryPopupComponent } from "~/app/shared/entries/entry-popup/entry-popup.component";
 import { ListPickerPopupComponent } from "~/app/shared/list-picker-popup/list-picker-popup.component";
 import { MonthTileObject } from "../calendar-data.model";
 import { CalendarEntriesService } from "../calendar-entries.service";
-import { EntryEditPopupComponent } from "./entry-edit-popup/entry-edit-popup.component";
+import { EntryEditPopupComponent } from "../../shared/entries/entry-edit-popup/entry-edit-popup.component";
+import { GoalAddPopupComponent } from "~/app/shared/entries/goal-add-popup/goal-add-popup.component";
 
 @Component({
   selector: "Day-Popup",
@@ -26,6 +27,7 @@ import { EntryEditPopupComponent } from "./entry-edit-popup/entry-edit-popup.com
 export class DayPopupComponent implements OnInit {
   public tile: MonthTileObject;
   public entries: DistanceData[];
+  public goals: Goal[];
   public entryStrings: string[] = [];
 
   public day: string;
@@ -51,6 +53,7 @@ export class DayPopupComponent implements OnInit {
   ngOnInit(): void {
     this.day = this._datepipe.transform(this.tile.date, "longDate");
     this._getEntries();
+    this._getGoals();
 
     if (this.tile.date > this._today) {
       this.future = true;
@@ -59,10 +62,38 @@ export class DayPopupComponent implements OnInit {
 
   private _getEntries() {
     this.entries = this._dataService
-      .getAllData()
+      .getAllDistanceData()
       .filter((data) =>
         this._entriesService.sameDay(data.date, this.tile.date)
       );
+  }
+
+  private _getGoals() {
+    this.goals = this._dataService
+      .getAllGoals()
+      .filter((goal) => {
+        // If goal.startDate exists
+        if (goal.startDate && goal.startDate > new Date (1970, 0, 1)) { 
+          // If tile.date is between goal.startDate and goal.date
+          if ((goal.startDate < this.tile.date || 
+              this._entriesService.sameDay(goal.startDate, this.tile.date)) &&
+              ((this.tile.date < goal.date ||
+              this._entriesService.sameDay(goal.date, this.tile.date)))) {
+                return true;
+              }
+          else {
+            return false;
+          }
+        }
+        else{ // If goal.startDate does not exist, checking if goal.date is the same as tile.date
+          if (this._entriesService.sameDay(goal.date, this.tile.date)){
+            return true;
+          }
+          else {
+            return false;
+          }
+        }
+      });
   }
 
   public close() {
@@ -98,40 +129,46 @@ export class DayPopupComponent implements OnInit {
       this.entryStrings.push(this.generateEntryString(e));
     });
 
-    console.log(this.entryStrings);
   }
 
-  public generateEntryString(data: DistanceData) {
-    let time = this._datepipe.transform(data.date, "shortTime");
-    let activity: string = data.activity === "run" ? "Ran" : "Walked";
+  public generateEntryString(data: DataObject) {
+
+    let time: string = "";
+    let activity: string = "";
+    let goal: boolean = false;
+
+    if ((data as Goal).setDate){ // this will only return true if this data is of type Goal
+      activity = data.activity === "run" ? "Run" : "Walk";
+      goal = true;
+    } else {  // otherwise, this data is of type DistanceData
+      activity = data.activity === "run" ? "Ran" : "Walked";
+      time = this._datepipe.transform(data.date, "shortTime") + ": ";
+    }
 
     let entry: string;
     let originalEntry = (entry =
       time +
-      ": " +
       activity +
       " " +
       data.originalEntry +
       " " +
-      data.originalUnit);
+      (data.originalUnit === "mi"? "miles" : "kilometers"));
     let milesEntry =
       time +
-      ": " +
       activity +
       " " +
       this._entriesService.polishDistance(
         this._dataService.convertToMi(data.distance)
       ) +
       " " +
-      "MI";
+      "miles";
     let kilometersEntry =
       time +
-      ": " +
       activity +
       " " +
       this._entriesService.polishDistance(data.distance) +
       " " +
-      "KM";
+      "kilometers";
 
     switch (this.unitMode) {
       case "original": {
@@ -165,32 +202,62 @@ export class DayPopupComponent implements OnInit {
       }
     }
 
+    if (goal){
+      if (((data as Goal).startDate && (data as Goal).startDate > new Date(1970, 0, 1)) &&
+          !(this._entriesService.sameDay((data as Goal).startDate, data.date))){ // If data.startDate exists
+        let goalDate: string = this._datepipe.transform(data.date, "shortDate");
+        entry += " by " + goalDate;
+      }  
+    }
+
     return entry;
   }
 
   public updateEntry(data: DistanceData) {
     let options: ModalDialogOptions = {
       context: {
-        entry: data,
+        date: this.tile.date,
+        entry: data
       },
       viewContainerRef: this.viewContainerRef,
     };
 
     this.modalService
-      .showModal(EntryEditPopupComponent, options)
-      .then((dialogResult: number) => {
-        if (dialogResult) {
-          console.log(dialogResult);
-          let entryIndex: number = this.entries.findIndex(
-            (x) => x.id === dialogResult
-          );
-          this.entries.splice(entryIndex, 1);
-          this.refresh = true;
-        }
+      .showModal(EntryPopupComponent, options)
+      .then((dialogResult: [number, boolean]) => { //returns array. Index 0 = entry edited, Index 1 = deleted (boolean)
+         if (dialogResult) {
+           if (dialogResult[1]){ // If the entry was deleted, remove from this popup lists
+            let entryIndex: number = this.entries.findIndex(
+              (x) => x.id === dialogResult[0]
+            );
+            this.entries.splice(entryIndex, 1);
+            this.refresh = true;
+           }
+           else if ((dialogResult[0] > 0) && !dialogResult[1]) { 
+            this._getEntries();
+          }
+        } 
       });
   }
 
   public addEntry() {
+    let options: ModalDialogOptions = {
+      context: {
+        date: this.tile.date
+      },
+      viewContainerRef: this.viewContainerRef,
+    };
+
+    this.modalService
+      .showModal(EntryPopupComponent, options)
+      .then((dialogResult: [number, boolean]) => {
+        if (dialogResult[0] === 1) {
+          this._getEntries();
+        }
+      });
+  }
+
+  public addGoal() {
     let options: ModalDialogOptions = {
       context: {
         date: this.tile.date,
@@ -199,10 +266,10 @@ export class DayPopupComponent implements OnInit {
     };
 
     this.modalService
-      .showModal(EntryAddPopupComponent, options)
+      .showModal(GoalAddPopupComponent, options)
       .then((dialogResult: boolean) => {
         if (dialogResult) {
-          this._getEntries();
+          this._getGoals();
         }
       });
   }

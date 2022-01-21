@@ -6,20 +6,26 @@
 
 // Animations
 @keyframes fade {
-  from { opacity: 0.5; }
-  to { opacity: 1; }
+  from {
+    opacity: 0.5;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .backwardsFade {
   animation-name: fade;
-  animation-duration: .6s;
+  animation-duration: .1s;
   animation-fill-mode: backwards;
 }
 
- @keyframes rotate {
+@keyframes rotate {
   from {
     transform: rotate(0deg) scale(1) skew(0deg) translate(100px);
   }
+
   to {
     transform: rotate(0deg) scale(2) skew(0deg) translate(100px);
   }
@@ -32,21 +38,21 @@
 ////
 .Armata {
   font-family: "Armata", "Armata-Regular";
- }
+}
 
- .averages {
-  margin: 1%; 
+.averages {
+  margin: 1%;
   background-color: #55475c;
-  border-width: 5px; 
-  border-color:#745f74; 
+  border-width: 5px;
+  border-color: #745f74;
   width: 28%;
   border-radius: 20px;
   font-size: 14px;
- }
+}
 
- .averages-title {
+.averages-title {
   background-color: #4b2f43;
- }
+}
 
 .centerText {
   color: const(rgb(38, 64, 148));
@@ -62,22 +68,23 @@ button {
   font-size: 16px;
   color: white;
   background-color: #4b2f43;
-  border-width: 10px; 
-  border-color:#614b58;
+  border-width: 10px;
+  border-color: #614b58;
   font-family: "Armata", "Armata-Regular";
 }
 
 .dateTitle {
-  background-color: white; 
-  color: #301e36}
+  background-color: white;
+  color: #301e36
+}
 
 .homeSubmit {
   color: #6b916b;
-  font-size: 60px; 
+  font-size: 60px;
   text-align: center;
 }
 
-.homeSubmit:active{
+.homeSubmit:active {
   animation-name: rotate;
   animation-duration: 3s;
   animation-iteration-count: 1;
@@ -86,8 +93,8 @@ button {
 }
 
 .homeTitle {
-  width: 80%; 
-  text-align: center; 
+  width: 80%;
+  text-align: center;
   font-size: 30px;
 }
 
@@ -99,16 +106,16 @@ button {
   font-size: 16px;
 }
 
-.popup{
+.popup {
   background-color: #413a42;
 }
 
 .submitCheck {
   color: #6b916b;
-  font-size: 30px; 
+  font-size: 30px;
   text-align: center;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  margin: 30px;
+  letter-spacing: 1px;
 }
 
 .listPicker {
@@ -119,7 +126,7 @@ button {
 }
 
 .listPicker.submitCheck {
-  font-size: 30px; 
+  font-size: 30px;
   background-color: white;
 }
 
@@ -131,13 +138,13 @@ button {
 }
 
 
-label.averages {
+Label.averages {
   width: 88%;
   padding: 4%;
- }
+}
 
 
-label.options {
+Label.options {
   font-size: 40px;
   color: white;
   font-family: "Armata", "Armata-Regular";
@@ -149,6 +156,12 @@ Label {
   text-align: center;
 }
 
+Label.calendarTitle {
+  letter-spacing: .1px;
+  font-size: 17px;
+  margin-bottom: 3px;
+}
+
 .navBar {
   font-size: 25px;
 }
@@ -158,7 +171,7 @@ TextField {
 }
 
 TextField.distanceInput {
-  background-color: #301e36; 
+  background-color: #301e36;
   color: white
 }
 
@@ -166,7 +179,7 @@ ActionBar {
   background-color: white;
 }
 
-ActionBar GridLayout{
+ActionBar GridLayout {
   background-color: white;
 }
 
@@ -174,8 +187,13 @@ GridLayout {
   background-color: #301e36;
 }
 
-StackLayout {
+StackLayout.default {
   background-color: #301e36;
+}
+
+ListView.dayPopup {
+  background-color: #413a42;
+  border: 0px;
 }
 
 .spacer {
@@ -184,35 +202,48 @@ StackLayout {
 
 .trashIcon {
   color: rgb(201, 92, 77);
-  font-size: 20px;
+  font-size: 30px;
+  margin: 30px;
+  letter-spacing: 1px;
 }
 
 .addIcon {
   color: #64a574;
   font-size: 30px;
   margin: 30px;
+  letter-spacing: 1px;
 }
 
 .starIcon {
   color: #cca04e;
   font-size: 30px;
   margin: 30px;
+  letter-spacing: 1px;
 }
 
 .gearIcon {
   color: #b4b4b4;
   font-size: 30px;
   margin: 30px;
+  letter-spacing: 1px;
 }
 
 .closeIcon {
   font-size: 30px;
   margin-bottom: 30px;
   margin-top: 10px;
+  letter-spacing: 1px;
 }
 
-.todayIcon {
+.calendarNavIcon {
   font-size: 30px;
+  margin: 30px;
+  color: rgb(196, 196, 196);
+  letter-spacing: 1px;
+}
+
+.calendarNavBar {
+  background-color: black;
 }
 
 // Font icon class
@@ -253,16 +284,16 @@ StackLayout {
 /// Month Tile Styling
 
 
-.monthTile { 
+.monthTile {
   color: white;
   background-color: black;
-  }
-  
+}
+
 .monthTile.another {
   color: #6b6b6b;
   background-color: #382c3f;
-  }
-  
+}
+
 .monthTile.today {
   color: white;
   font-size: 16px;
@@ -270,26 +301,61 @@ StackLayout {
   background-color: #b4abab;
   border: solid;
   border-color: rgb(107, 96, 119);
-  }
+}
 
 .monthTile.today Label.date {
- // background-color: #1f686d;
+  // background-color: #1f686d;
   height: 24;
   width: 100%;
   text-align: right;
 
 }
-  
+
 .distance {
   font-size: 18px;
-  }
-  
+}
+
 .distance.goalMet {
   color: #64a574;
-  }
-  
+}
+
 .distance.none {
   color: #ad5454;
-  }
-  
-  
+}
+
+.goal.set {
+  color: #f1b23c;
+}
+
+.goal-bar {
+  height: 5;
+  background-color: #d49712;
+  margin-top: 10%;
+}
+
+.goal-bar.middleDay {
+  width: 100%;
+}
+
+.goal-bar.singleDay {
+  width: 40;
+  border-radius: 10;
+}
+
+.goal-bar.lastDay {
+  width: 40;
+  border-top-right-radius: 10;
+  border-bottom-right-radius: 10;
+}
+
+.goal-bar.firstDay {
+  width: 40;
+  border-top-left-radius: 10;
+  border-bottom-left-radius: 10;
+}
+
+.selectable {
+  background-color: rgb(131, 146, 194);
+  padding: 30px;
+  border-radius: 40px;
+}

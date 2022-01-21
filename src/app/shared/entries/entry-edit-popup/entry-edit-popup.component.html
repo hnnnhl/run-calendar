@@ -1,5 +1,5 @@
 
-<StackLayout class="dayPopup"  >
+<StackLayout class="dayPopup"  width="500">
         <Label [text]="entry.date"></Label>
         <Label text="Entry Date: {{ entry.entryDate }}"></Label>
         <Label text="Activity: {{ entry.activity }}"></Label>
@@ -7,13 +7,3 @@
         <Label class="fas trashIcon" text="&#xf2ed;" (tap)="deleteEntry()"></Label>
 </StackLayout>
 
-<!-- 
-date: Date;
-entryDate: Date;
-
-distance: number; //in km
-activity: string;
-
-originalEntry: number;
-originalUnit: string;
- -->

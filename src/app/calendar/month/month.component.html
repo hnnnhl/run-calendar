@@ -1,29 +1,20 @@
+<GridLayout #monthGrid columns="*, *, *, *, *, *, *" rows="auto, auto, *, *, *, *, *, *"
+        style="height: 600; width: 385; margin-bottom: 10; margin-left: 10; margin-right: 10" class="backwardsFade">
+        <Label row="0" class="calendarTitle" colSpan="7"
+                text="{{ monthObject.tiles[0].month }} {{monthObject.tiles[0].year}}" horizontalAlignment="center"
+                (tap)="selectMonth()"></Label>
 
-        <GridLayout columns="*, *, *, *, *, *, *" rows="auto, auto, *, *, *, *, *, *" 
-                    style="height: 640; width: 375; margin-bottom: 10; margin-left: 10; margin-right: 10"
-                    class="backwardsFade">
-            <label row="0" colSpan="7" text="{{ daysOfMonth[0].month }} {{daysOfMonth[0].year}}" style="font-size: 14px;" horizontalAlignment="center"></label>
+        <Label row="1" column="0" text="Sun" style="font-size: 12px; color: white" horizontalAlignment="center"></Label>
+        <Label row="1" column="1" text="Mon" style="font-size: 12px; color: white" horizontalAlignment="center"></Label>
+        <Label row="1" column="2" text="Tue" style="font-size: 12px; color: white" horizontalAlignment="center"></Label>
+        <Label row="1" column="3" text="Wed" style="font-size: 12px; color: white" horizontalAlignment="center"></Label>
+        <Label row="1" column="4" text="Thu" style="font-size: 12px; color: white" horizontalAlignment="center"></Label>
+        <Label row="1" column="5" text="Fri" style="font-size: 12px; color: white" horizontalAlignment="center"></Label>
+        <Label row="1" column="6" text="Sat" style="font-size: 12px; color: white" horizontalAlignment="center"></Label>
 
-            <label row="1" column="0" text="Sun" style="font-size: 12px; color: white" horizontalAlignment="center"></label>
-            <label row="1" column="1" text="Mon" style="font-size: 12px; color: white" horizontalAlignment="center"></label>
-            <label row="1" column="2" text="Tue" style="font-size: 12px; color: white" horizontalAlignment="center"></label>
-            <label row="1" column="3" text="Wed" style="font-size: 12px; color: white" horizontalAlignment="center"></label>
-            <label row="1" column="4" text="Thu" style="font-size: 12px; color: white" horizontalAlignment="center"></label>
-            <label row="1" column="5" text="Fri" style="font-size: 12px; color: white" horizontalAlignment="center"></label>
-            <label row="1" column="6" text="Sat" style="font-size: 12px; color: white" horizontalAlignment="center"></label>
+        <ng-template row="2" #tiles></ng-template>
 
-<!--             <GridLayout rows="auto, *" style="margin: 4px" *ngFor="let item of daysOfMonth" [row]="item.row" [column]="item.column"
-                        [ngClass]="getDateStyle(item)" (tap)="dayTap(item)">
-                <label  textWrap=true text="{{ item.date.getDate() }}" horizontalAlignment="right" verticalAlignment="top"
-                        [ngClass]="getDateStyle(item)"></label>
-                <label *ngIf="showTileDistance(item.date)" 
-                        [text]="entriesService.polishDistance(item.distances.totalRunDistance+item.distances.totalWalkDistance)" 
-                        style="font-size: 18px; margin-top: 40%;" 
-                        [ngClass]="getDistanceStyle(item)" verticalAlignment="center"></label>
-            </GridLayout> 
-        -->
-            <ng-template #tiles >
+        <Goal-Bar-Controller [monthObject]="monthObject"></Goal-Bar-Controller>
 
-            </ng-template>
 
-        </GridLayout>
+</GridLayout>

@@ -7,8 +7,8 @@
   </GridLayout>
 </ActionBar>
 
-<ScrollView (scroll)="onScroll($event)">
-  <StackLayout>
+<ScrollView (scroll)="onScroll($event)" >
+  <StackLayout class="default" >
 
     <GridLayout class="page__content" rows="320, 230, 150, 30">
       <StackLayout row="0" horizontalAlignment="center"  verticalAlignment="bottom">
@@ -28,20 +28,28 @@
 
     </GridLayout> 
 
-    <GridLayout rows="*, *"  horizontalAlignment="center">
-        <!-- <Calendar #calendar row="5"></Calendar>  -->
+    <StackLayout class="default" row="0" orientation="horizontal" horizontalAlignment="left" verticalAlignment="center">
+      <Label text="mi" style="font-size: 12px; padding-left: 10%;" verticalAlignment="center"></Label>
+      <Switch (checkedChange)="onSwitchUnitChange($event)" [checked]="unitKm"
+              color="#c4614f" backgroundColor="white" offBackgroundColor="white" 
+              horizontalAlignment="center" ></Switch>
+      <Label text="km" style="font-size: 12px;" verticalAlignment="center"></Label>
+    </StackLayout>
+
+    <GridLayout rows="*, *, "  horizontalAlignment="center">
+
         <ng-template #calendar row="0"></ng-template>
 
         <ActivityIndicator row="0" [busy]="isBusy" color="#d9c564" width="70" height="70"></ActivityIndicator>
 
-        <StackLayout row="1" orientation="horizontal" horizontalAlignment="left" verticalAlignment="center">
-            <label text="mi" style="font-size: 12px; padding-left: 10%;" verticalAlignment="center"></label>
-            <Switch (checkedChange)="onSwitchUnitChange($event)" [checked]="unitKm"
-                    color="#c4614f" backgroundColor="white" offBackgroundColor="white" 
-                    horizontalAlignment="center" ></Switch>
-            <label text="km" style="font-size: 12px;" verticalAlignment="center"></label>
-            <button class="fas todayIcon" text="&#xf783;" (tap)="resetCalendar()"></button> 
-        </StackLayout>
+        <GridLayout row="1" rows="*" columns="100, *, 100" class="calendarNavBar" verticalAlignment="center">
+          <Label row="0" column="0" class="fas calendarNavIcon" horizontalAlignment="left" 
+                  text="&#xf359;" (tap)="previousMonth()"></Label>
+          <Label row="0" column="1" class="fas calendarNavIcon" horizontalAlignment="center"
+                  text="&#xf783;" (tap)="resetCalendar()"></Label> 
+          <Label row="0" column="2" class="fas calendarNavIcon" horizontalAlignment="right" 
+                  text="&#xf35a;" (tap)="nextMonth()"></Label>
+        </GridLayout>
     </GridLayout>
 
   </StackLayout>

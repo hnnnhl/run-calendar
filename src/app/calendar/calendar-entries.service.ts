@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
-import { DistanceData } from "~/app/data/data.model";
+import { DistanceData, Goal } from "~/app/data/data.model";
 import { DataService } from "~/app/data/data.service";
 import {
   ActivitySummary,
   MonthMap,
+  MonthObject,
   MonthTileObject,
 } from "./calendar-data.model";
 
@@ -31,40 +32,29 @@ export class CalendarEntriesService {
   public month: number = this.today.getMonth();
   public currentMonth: MonthMap;
 
-  public displayData: DistanceData[] = [];
-  private _activeMonths: { month: number; year: number }[] = [];
+  public monthCache: MonthObject[] = [];
+
 
   constructor(private _dataService: DataService) {
     this.currentMonth = this._monthMap.find((m) => m.index === +this.month);
   }
 
-  public get activeMonths() {
-    let copy: { month: number; year: number }[] = [];
-    this._activeMonths.forEach((x) => {
-      copy.push({ month: x.month, year: x.year });
-    });
-    return copy;
-  }
-
-  initMonths(): MonthTileObject[][] {
-    let initMonthSet: MonthTileObject[][] = [];
-    this._activeMonths = [];
+  initMonth(): MonthObject {
+    let initMonth: MonthObject;
+    //this._activeMonths = [];
 
     var startMonthDate = new Date();
 
     var newMonth = startMonthDate.getMonth();
     var newYear = startMonthDate.getFullYear();
 
-    this._activeMonths.push({ month: newMonth, year: newYear });
-    initMonthSet.push(this.setupMonthTiles(newMonth, newYear));
-    newMonth++;
+    //this._activeMonths.push({ month: newMonth, year: newYear });
+    initMonth = this.setupMonthTiles(newMonth, newYear);
 
-    return initMonthSet;
+    return initMonth;
   }
 
-  setupMonthTiles(inputMonth: number, inputYear: number): MonthTileObject[] {
-    console.log("inputMonth" + inputMonth);
-    console.log("inputYear" + inputYear);
+  setupMonthTiles(inputMonth: number, inputYear: number): MonthObject {
 
     let firstDayMonth: Date = new Date(inputYear, inputMonth, 1);
     let lastDayMonth: Date = new Date(inputYear, inputMonth + 1, 0);
@@ -82,15 +72,6 @@ export class CalendarEntriesService {
       lastDayMonth.getDate() + extraEndDays
     );
 
-    //Finding all entries for the current month
-    let AllDataCopy: DistanceData[] = this._dataService.getAllData();
-
-    if (AllDataCopy) {
-    }
-    this.displayData = AllDataCopy.filter(
-      (data) => data.date.getMonth() === inputMonth
-    );
-
     var tempDaysOfMonth: Date[] = [];
     var nextDate: Date = new Date(firstDay.getTime());
 
@@ -102,6 +83,10 @@ export class CalendarEntriesService {
 
     var tempMonthTileList: MonthTileObject[] = [];
     var currentMonthGroupedData: ActivitySummary[] = this.groupDataByDay(
+      firstDay,
+      lastDay
+    );
+    var currentMonthGroupedGoals: ActivitySummary[] = this.groupGoalsByDay(
       firstDay,
       lastDay
     );
@@ -117,8 +102,20 @@ export class CalendarEntriesService {
         (data) => this.sameDay(data.date, day)
       );
 
+      let thisDaysGoals: ActivitySummary = currentMonthGroupedGoals.find(
+        (goal) => this.sameDay(goal.date, day)
+      );
+
       if (!thisDaysDistance) {
         thisDaysDistance = {
+          date: day,
+          totalWalkDistance: 0,
+          totalRunDistance: 0,
+        }; // If there is no data for the given day, the distances are set to 0
+      }
+
+      if (!thisDaysGoals) {
+        thisDaysGoals = {
           date: day,
           totalWalkDistance: 0,
           totalRunDistance: 0,
@@ -129,8 +126,8 @@ export class CalendarEntriesService {
 
       tempMonthTileList.push({
         date: day,
-        //distanceData: thisDaysDistance,
         distances: thisDaysDistance,
+        goals: thisDaysGoals,
         column: day.getDay(),
         row: currentRow,
         month: this._monthMap.find((m) => m.index === inputMonth).name,
@@ -139,7 +136,7 @@ export class CalendarEntriesService {
       });
     });
 
-    return tempMonthTileList;
+    return {month: inputMonth, year: inputYear, tiles: tempMonthTileList};
   }
 
   // Summarizes the total distances for each day in the provided range
@@ -147,7 +144,7 @@ export class CalendarEntriesService {
     let dayGroupedData: ActivitySummary[] = [];
 
     let filteredData: DistanceData[] = this._dataService
-      .getAllData()
+      .getAllDistanceData()
       .filter((data) => startDate <= data.date && data.date <= endDate);
 
     filteredData.forEach((data) => {
@@ -187,9 +184,55 @@ export class CalendarEntriesService {
     return dayGroupedData;
   }
 
+  public groupGoalsByDay(startDate: Date, endDate: Date): ActivitySummary[] {
+    let dayGroupedData: ActivitySummary[] = [];
+
+    let filteredData: Goal[] = this._dataService
+      .getAllGoals()
+      .filter((data) => startDate <= data.date && data.date <= endDate);
+
+    filteredData.forEach((data) => {
+      let dayExistsSearch: ActivitySummary = dayGroupedData.find((d) =>
+        this.sameDay(d.date, data.date)
+      ); // Checking if this date already exists in dayGroupedData
+
+      if (dayExistsSearch) {
+        // If the day already exists in dayGroupedData, add the distances of this data object to the existing entry for that day
+        let index: number = dayGroupedData.indexOf(dayExistsSearch);
+        if (data.activity === "run") {
+          dayGroupedData[index].totalRunDistance += data.distance;
+        }
+        if (data.activity === "walk") {
+          dayGroupedData[index].totalRunDistance += data.distance;
+        }
+      } else {
+          let runDistance: number;
+          let walkDistance: number;
+          if (data.activity === "run") {
+            runDistance = data.distance;
+            walkDistance = 0;
+          }
+          if (data.activity === "walk") {
+            runDistance = 0;
+            walkDistance = data.distance;
+          }
+
+        dayGroupedData.push({
+          date: data.date,
+          totalRunDistance: runDistance,
+          totalWalkDistance: walkDistance,
+        });
+      }
+
+      
+    });
+
+    return dayGroupedData;
+  }
+
   public totalDistanceForDay(day: Date): number {
     let allEntriesForDay: DistanceData[] = this._dataService
-      .getAllData()
+      .getAllDistanceData()
       .filter((x) => this.sameDay(x.date, day));
     let total: number = 0;
     allEntriesForDay.forEach((x) => (total += x.distance));

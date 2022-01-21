@@ -1,17 +1,40 @@
 
-<StackLayout class="dayPopup" >
-        <Label class="dateTitle" [text]="day"></Label>
-        <Label text="Entries:"></Label>
-        <Label *ngIf="!(entries.length > 0)" text="No entries for this day."></Label>
-        <ListView [items]="entries" height="500px">
-                <ng-template let-entry="item">
-                        <Label [text]="generateEntryString(entry)" (tap)="updateEntry(entry)"></Label>
-                </ng-template>
-        </ListView>
-        <StackLayout class="dayPopup" orientation="horizontal" horizontalAlignment="center">
+<GridLayout rows="auto, auto, auto, auto" class="dayPopup" width="500" verticalAlignment="top">
+        <Label row="0" class="dateTitle" [text]="day"></Label>
+    
+        <Label row="1" rowspan="2" [hidden]="(entries.length > 0) || future" text="No entries for this day." 
+                verticalAlignment="center" width="100%"></Label>
+        <Label row="1" rowspan="2" [hidden]="(goals.length > 0) || !future" text="No goals for this day." 
+                verticalAlignment="center"  width="100%"></Label>
+
+        <StackLayout row="1" height="30%" width="100%" [hidden]="(!(entries.length > 0) && future)">
+                <Label [hidden]="!(entries.length > 0)" text="ENTRIES" verticalAlignment="top"
+                        style="padding-top: 20%; padding-bottom: 10%;"></Label>
+                <ListView [hidden]="!(entries.length > 0)" class="dayPopup" [items]="entries" height="100%"
+                        style="border-width: 2px; border-color:white; border-radius: 10; width:60%" 
+                        verticalAlignment="center">
+                        <ng-template let-entry="item">
+                                <Label class="popup" style="text-align: center;" [text]="generateEntryString(entry)" (tap)="updateEntry(entry)"></Label>
+                        </ng-template>
+                </ListView>
+        </StackLayout>
+
+        <StackLayout row="2" height="20%" width="100%" [hidden]="(!(goals.length > 0) && !future)" >
+                <Label [hidden]="!(goals.length > 0)" text="GOALS" verticalAlignment="top"
+                        style="padding-top: 20%; padding-bottom: 10%;"></Label>
+                <ListView [hidden]="!(goals.length > 0)" class="dayPopup" [items]="goals" height="100%"
+                        style="border-width: 2px; border-color:white; border-radius: 10; width:60%"
+                        verticalAlignment="center" >
+                        <ng-template let-goal="item">
+                                <Label class="popup" style="text-align: center;" [text]="generateEntryString(goal)" ></Label>
+                        </ng-template>
+                </ListView>
+        </StackLayout>
+
+        <StackLayout row="3" class="dayPopup" orientation="horizontal" horizontalAlignment="center">
                 <Label class="fas addIcon" *ngIf="!future" text="&#xf271;" (tap)="addEntry()"></Label>
-                <Label class="fas starIcon" *ngIf="future" text="&#xf005;" ></Label>
+                <Label class="fas starIcon" *ngIf="future" text="&#xf005;" (tap)="addGoal()"></Label>
                 <Label class="fas gearIcon" text="&#xf013;" (tap)="pickUnits()"></Label>
         </StackLayout>
-        <Label class="far closeIcon" text="&#xf410;" (tap)="close()"></Label>
-</StackLayout>
+       <!--  <Label class="far closeIcon" text="&#xf410;" (tap)="close()"></Label> -->
+</GridLayout>

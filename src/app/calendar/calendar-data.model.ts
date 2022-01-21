@@ -5,10 +5,16 @@ export interface MonthMap {
   name: string;
 }
 
+export interface MonthObject {
+  month: number,
+  year: number,
+  tiles: MonthTileObject[]
+}
+
 export interface MonthTileObject {
   date: Date;
-  //distanceData: DistanceData,
   distances: ActivitySummary;
+  goals?: ActivitySummary;
   row: number;
   column: number;
   month: string;

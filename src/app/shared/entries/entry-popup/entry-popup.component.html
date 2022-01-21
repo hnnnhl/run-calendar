@@ -1,0 +1,34 @@
+
+<GridLayout class="dayPopup"  verticalAlignment="center" width="500"
+        rows="auto, 50, 60, 60, 60, 60, auto" 
+        columns="*, 100, 50, 100, *" >
+
+        <Label row="0" colspan="5" class="popup" [text]="dateString" verticalAlignment="center"
+                class="dateTitle"></Label>
+        <Label row="1" colspan="5" class="popup" [text]="title"  verticalAlignment="center"></Label>
+                
+        <Label row="2" column="1" text="Time:" verticalAlignment="center" horizontalAlignment="right"></Label>
+        <Label row="2" column="3" class="selectable" [text]="timeString" (tap)="selectTime()" 
+                verticalAlignment="center" horizontalAlignment="left"></Label>
+                
+        <Label row="3" column="1" text="Activity:" verticalAlignment="center" horizontalAlignment="right"></Label>
+        <Label row="3" column="3" class="selectable" [text]="activity" (tap)="selectActivity()" 
+                verticalAlignment="center" horizontalAlignment="left"></Label>
+
+        <Label row="4" column="1" text="Distance:" verticalAlignment="center" horizontalAlignment="right"></Label>
+        <TextField row="4" column="3" class="selectable" 
+                style="width: 15%; height: 6%; font-size: 18px; color: white; text-align: center;" marginLeft="0" 
+                marginBottom="1" horizontalAlignment="left" [(ngModel)]="distance" keyboardType="number"></TextField>
+
+        <Label row="5" column="1" text="Units:" verticalAlignment="center" horizontalAlignment="right"></Label>
+        <Label row="5" column="3" class="selectable" [text]="unit" (tap)="selectUnit()" 
+                verticalAlignment="center" horizontalAlignment="left"></Label>
+
+        <StackLayout row="6" colspan="5" orientation="horizontal" horizontalAlignment="center" verticalAlignment="center">
+                <Label [hidden]="editMode" class="fas submitCheck popup" text="&#xf058;" (tap)="submitEntry()"></Label>
+                <Label [hidden]="!editMode" class="fas submitCheck popup" text="&#xf058;" (tap)="updateEntry()"></Label>
+                <Label [hidden]="!editMode" class="fas trashIcon" text="&#xf2ed;" (tap)="deleteEntry()"></Label>
+        </StackLayout>
+
+        
+</GridLayout>

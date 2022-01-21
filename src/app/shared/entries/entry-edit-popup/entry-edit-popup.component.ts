@@ -32,6 +32,7 @@ export class EntryEditPopupComponent implements OnInit {
 
   public deleteEntry() {
     this._dataService.deleteEntry(this.entry);
+    this._dataService.distancesUpdated = true;
     this.close(this.entry.id);
   }
 }

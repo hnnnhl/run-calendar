@@ -31,7 +31,6 @@ import { ListPickerPopupComponent } from "../shared/list-picker-popup/list-picke
   templateUrl: "./home.component.html",
 })
 export class HomeComponent implements OnInit, AfterViewInit {
-  //  @ViewChild('calendar') Calendar: CalendarComponent;
   @ViewChild("calendar", { read: ViewContainerRef })
   container: ViewContainerRef;
   Calendar: CalendarComponent;
@@ -64,7 +63,31 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.unit = this.dataService.unit;
     this.unit === "kilometers" ? (this.unitKm = true) : (this.unitKm = false);
 
-    //this.dataService.deleteAllData();
+ // this.dataService.deleteAllData();
+ /*  
+    this.dataService.addGoal({
+      date: new Date (2022, 0, 15),
+      activity: "run",
+      distance: 20,
+      unit: "mi",
+      startDate: new Date (2022, 0, 9)});  
+  
+    this.dataService.addGoal({
+      date: new Date (2022, 0, 22),
+      activity: "run",
+      distance: 20,
+      unit: "mi",
+      startDate: new Date (2022, 0, 16)});   
+
+    this.dataService.addGoal({
+      date: new Date (2022, 2, 29),
+      activity: "run",
+      distance: 20,
+      unit: "mi",
+      startDate: new Date (2022, 0, 23)});  */
+
+
+    
     /*     this.dataService.addEntry({
       date: new Date(2021, 8, 25),
       distance: 1,
@@ -131,7 +154,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     await this.sleep(10).then(() => {
       this.Calendar.resetMonths();
 
-      if (this.Calendar.scrollX > this.Calendar.defaultXCoord) {
+  /*     if (this.Calendar.scrollX > this.Calendar.defaultXCoord) {
         this.Calendar.scrollView.scrollToHorizontalOffset(
           this.Calendar.defaultXCoord + 50,
           true
@@ -149,8 +172,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
       true
     );
     //  await this.sleep(30);
-    this.Calendar.rightMost = 2;
+    this.Calendar.rightMost = 2; */
     this.isBusy = false;
+  });
   }
 
   public navRun() {
@@ -226,14 +250,25 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.unit = "kilometers";
       this.dataService.unit = "km";
       this.unitKm = true;
+      
     } else {
       this.unit = "miles";
       this.dataService.unit = "mi";
       this.unitKm = false;
     }
+    this.Calendar.refreshMonthInstances();
+  }
+
+  previousMonth() {
+    this.Calendar.previousMonth();
+  }
+  nextMonth() {
+    this.Calendar.nextMonth();
   }
 
   sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }
+
+
