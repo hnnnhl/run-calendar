@@ -148,13 +148,14 @@ export class GoalAddPopupComponent implements OnInit {
     }
     else {
       let options = {
-        message: "This goal overlaps with another. Choose different goal dates.",
+        message: `<div style="color:black">This goal overlaps with another. Choose different goal dates.</div>`,
         okButtonText: "OK"
     };
     
       alert(options);
     }
     
+    this._dataService.goalsUpdated = true;
     this.close(true);
   }
 }

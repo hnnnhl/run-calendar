@@ -53,16 +53,14 @@ import { GoalBarComponent } from "./goal-bar.component";
       this._factory = this._resolver.resolveComponentFactory(GoalBarComponent);
 
       this.getMonthGoals();
-      //this.monthGoals.forEach(x =>{console.log("monthgoals;;;;"+x.date+"//"+x.activity)});
     }
 
-        
     ngAfterViewInit(): void {
 
       if (this.container){
-        this.getGoalBarInstances();
+        this._getGoalBarInstances();
         }
-   
+
     }
   
     public getMonthGoals(){
@@ -70,7 +68,6 @@ import { GoalBarComponent } from "./goal-bar.component";
         if (!g.startDate || g.startDate < new Date (1970, 0, 1)){ //If no startDate is given, the goal is for a single day. Check if this day is in range of the month.
           if (this._monthStart <= g.date && g.date <= this._monthEnd){
             this.monthGoals.push(g);
-            console.log("single day pushed to month goal;;;;"+g.date+"//"+g.activity);
           }
         } 
         else { //If g.startDate exists, every day in the range of g.startDate to g.date is checked to see if it is in range of the month
@@ -81,7 +78,7 @@ import { GoalBarComponent } from "./goal-bar.component";
           while (!(this._entriesService.sameDay(goalStart, end))){
             if (this._monthStart <= goalStart && goalStart <= this._monthEnd){ 
               this.monthGoals.push(g);
-              console.log("date is in range and added to month goals;;;;"+g.date+"//"+g.startDate);
+           
               break;
             }
             goalStart.setDate(goalStart.getDate()+1);
@@ -90,7 +87,7 @@ import { GoalBarComponent } from "./goal-bar.component";
       }); 
     }
 
-    getGoalBarInstances() {
+    private _getGoalBarInstances() {
     
      this.container.clear();
   
@@ -99,7 +96,6 @@ import { GoalBarComponent } from "./goal-bar.component";
 
         let goalText = this._entriesService.polishDistance(goal.distanceRemaining)+"";
 
-        console.log("goal start "+ goal.startDate);
         if (!goal.startDate || 
             goal.startDate < new Date(1970, 0, 1) || 
             this._entriesService.sameDay(goal.startDate, goal.date)){
@@ -134,7 +130,6 @@ import { GoalBarComponent } from "./goal-bar.component";
           let diffDays = Math.ceil(diff / (1000 * 3600 * 24));//+1;
           let currentRow: number = tile.row;
           let dayOfWeek: number = tile.date.getDay();
-          console.log("diff days "+diffDays +"GOAL: "+ goal.startDate +"//"+goal.date);
 
           if (!startedBefore){
             const firstDayBar = this.container.createComponent(this._factory);
@@ -153,14 +148,12 @@ import { GoalBarComponent } from "./goal-bar.component";
           let newDayCalculation0: [number, number, boolean] = this._newDay(dayOfWeek, 1); //Adding 1 for the day firstDayBar covers
           dayOfWeek = newDayCalculation0[0];
           currentRow += this._rowUpdate(newDayCalculation0);
-          console.log("currentrow line 149 "+currentRow);
         }
         
-        console.log ("while (diffdays>0 --diffdays "+diffDays);
           while (diffDays > 0){
             let remainingDaysInWeek: number = 7-dayOfWeek;
             if (remainingDaysInWeek >= diffDays && diffDays != 1) {
-              console.log("remainingDaysInWeek > diffDays//"+remainingDaysInWeek+"//"+diffDays);
+     
               let colspan2 = diffDays-1; // -1 subtracting 1 to leave room for the final day
 
               if (currentRow <= 7) { // 7 is the last row in the calendar
@@ -187,8 +180,6 @@ import { GoalBarComponent } from "./goal-bar.component";
             }
             else if (diffDays > 1){ 
                 let colspan0: number = remainingDaysInWeek;//diffDays-remainingDaysInWeek;
-                console.log("diffdays does not equal 1")
-
 
                   if (currentRow <= 7) {
                     const midBar = this.container.createComponent(this._factory);
@@ -213,7 +204,6 @@ import { GoalBarComponent } from "./goal-bar.component";
             
 
                 while ((diffDays/7) > 1){
-                  console.log(this.monthObject.month+" current row, diffdays"+diffDays+"//"+currentRow);
 
                   if (currentRow <= 7){
                     const fullWeekBar = this.container.createComponent(this._factory);
@@ -237,7 +227,7 @@ import { GoalBarComponent } from "./goal-bar.component";
             
                 }
 
-                let colspan1: number = diffDays//-remainingDaysInWeek;
+                let colspan1: number = diffDays;
 
                 if (diffDays > 1){ // Skipping to lastDay bar if this is the last day
                   if (currentRow <= 7){
@@ -261,11 +251,9 @@ import { GoalBarComponent } from "./goal-bar.component";
                 let newDayCalculation3: [number, number, boolean] = this._newDay(dayOfWeek, colspan1-1); 
                 dayOfWeek = newDayCalculation3[0];
                 }
-            } 
-            
-            
+            }    
 
-            if (currentRow <= 7){ console.log("goalText=="+ goalText);
+            if (currentRow <= 7){ 
               const lastDayBar = this.container.createComponent(this._factory);
       
               lastDayBar.instance.row = currentRow;

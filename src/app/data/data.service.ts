@@ -6,19 +6,11 @@ import {
   File,
   path,
 } from "@nativescript/core/file-system";
-import { Variable } from "@angular/compiler/src/render3/r3_ast";
-import { variable } from "@angular/compiler/src/output/output_ast";
-import { ActivitySummary, MonthTileObject } from "../calendar/calendar-data.model";
-import { CalendarEntriesService } from "../calendar/calendar-entries.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class DataService {
-/*   private _storage = require("nativescript-android-fs");
-  private _dataFolder = "/Android/data/org.nativescript.RunCalendar";
-  private _dataFile = "data.txt";
-  private _goalFile = "goals.txt"; */
 
   private folderPath: string = path.join(
     knownFolders.documents().path,
@@ -37,7 +29,6 @@ export class DataService {
   private _GoalMap: {goalId: number, date: Date}[] = []; // Keeps tracks of which dates already have goals assigned
 
   private _unit: string = "mi";
-
   private _ID: number;
 
   public distancesUpdated: boolean = false;
@@ -179,41 +170,6 @@ export class DataService {
     return goalMapData;
   }
 
-
-  /* private _readMonthTiles(): MonthTileObject[] {
-    var monthTileData: MonthTileObject[] = [];
-
-    try {
-      if (JSON.parse(this._monthTileStorageFile.readTextSync())) {
-        const readData: MonthTileObject[] = JSON.parse(
-          this._monthTileStorageFile.readTextSync()
-        );
-        readData.forEach((monthTile) => {
-          let dateString: string = monthTile.date.toString();
-          let parsedDate: Date = new Date(dateString);
-          let distancesString: string = monthTile.distances.toString();
-          let parsedDistances: ActivitySummary = JSON.parse(distancesString);
-          let goalsString: string = monthTile.goals.toString();
-          let parsedGoals: ActivitySummary = JSON.parse(goalsString);
-          monthTileData.push({
-            date: parsedDate,
-            distances: parsedDistances,
-            goals: parsedGoals,
-            row: monthTile.row,
-            column: monthTile.column,
-            month: monthTile.month,
-            year: monthTile.year,
-            primaryMonth: monthTile.primaryMonth
-          });
-        });
-      }
-    } catch (e) {
-      console.log("monthTile read error: " + e);
-    }
-
-    return monthTileData;
-  } */
-
   public addEntry(entry: DistanceDataEntry) {
     let kmDistance: number = entry.distance;
     let entryUnit: string;
@@ -279,7 +235,6 @@ export class DataService {
   }
 
   public addGoal(goal: GoalEntry) {
-    console.log(goal.startDate+"// in add goal data service");
     let kmDistance: number = goal.distance;
     let entryUnit: string;
 
@@ -306,7 +261,6 @@ export class DataService {
       distanceRemaining: kmDistance
     };
 
-    console.log("added::::"+fullGoal.id+"??"+fullGoal.date+"??"+fullGoal.startDate);
     this._AllGoals.push(fullGoal);
     this.saveGoals();
     
@@ -316,7 +270,7 @@ export class DataService {
       let endDate: Date = new Date(goal.date.getTime());
       endDate.setDate(endDate.getDate()+1);
       while (!(this.sameDay(initDate, endDate))){
-        this._GoalMap.push({goalId: fullGoal.id, date: new Date(initDate.getTime())}); console.log(fullGoal.id+"//"+initDate);
+        this._GoalMap.push({goalId: fullGoal.id, date: new Date(initDate.getTime())});
         initDate.setDate(initDate.getDate()+1);
       }
     } 
@@ -361,17 +315,15 @@ export class DataService {
 
   
   private _updateGoals(entry: DistanceData, oldEntry?: DistanceData){
-    this._GoalMap.forEach(x => console.log(x.date));
     // Updating goals 
     let goalDateSearch = this._GoalMap.find(x => this.sameDay(x.date, entry.date));
-    if (goalDateSearch){ console.log("goalfound "+goalDateSearch.date);
+    if (goalDateSearch){ 
       let goalSearch: Goal = this._AllGoals.find(x => x.id === goalDateSearch.goalId && entry.activity === x.activity);
         if (goalSearch){ 
           if (oldEntry){
             goalSearch.distanceRemaining += oldEntry.distance; //Re-adding the old entry's distance
           }
           goalSearch.distanceRemaining -= entry.distance; //Updating distance remaining for goal
-          console.log("updated distance remaining: "+goalSearch.distanceRemaining);
           if (goalSearch.distanceRemaining <= 0){ // Goal achieved
             goalSearch.achievedDate = new Date(); // Logging current date as date achieved
             
@@ -404,16 +356,6 @@ export class DataService {
     }
   }
 
-  /* public save(){
-    var AllDataString: string = JSON.stringify(this.AllData);
-
-    var file = this._storage.delete(this._dataFolder, this._dataFile);
-    if (file){console.log('deleted file');}
-    file = this._storage.create(this._dataFolder, this._dataFile, AllDataString);
-    if (file){console.log('created file');}
- 
-  }
- */
   public averageData(
     startDate: Date,
     endDate: Date
@@ -498,11 +440,6 @@ export class DataService {
   // Remove later. For testing the contents of the data.json file.
   public testRead(): string {
     var testString = this._distanceStorageFile.readTextSync();
-    /*   const dataFileContents = this._storage.read(this._dataFolder, this._dataFile);
-      if(dataFileContents){
-        testString = dataFileContents;
-      } */
-
     return testString;
   }
 
@@ -518,7 +455,7 @@ export class DataService {
     }
   }
 
-  // Returns a goalID if a collision exists
+  /** Returns a goalID if a collision exists */
   public goalDateCollision(newGoal: GoalEntry): number{
     if (newGoal.startDate){ // Checking range of dates between start date and goal date
       let initDate: Date = new Date(newGoal.startDate.getTime());

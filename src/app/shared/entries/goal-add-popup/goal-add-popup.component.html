@@ -2,8 +2,6 @@
 <GridLayout class="dayPopup"  verticalAlignment="center" width="500"
         rows="auto, 50, 60, 60, 60, 10, 40, auto" 
         columns="*, 120, 50, 120, *" >
-<!--         rows="auto, 50, 60, 60, 60, 10, 40, auto" 
-        columns="*, 90, 20, 50, 20, 90, *" > -->
 
         <Label row="0" colspan="5" class="popup" [text]="dateString" verticalAlignment="center"
                 class="dateTitle"></Label>
@@ -12,9 +10,6 @@
         <Label row="2" column="1" text="Start Date:" verticalAlignment="center" horizontalAlignment="right"> </Label>
         <Label row="2" column="3" class="selectable" [text]="startDateString" verticalAlignment="center" 
                 horizontalAlignment="left" (tap)="selectStartDate()"></Label>
-                
- <!--        <Label row="2" column="1" text="Time:" verticalAlignment="center"></Label>
-        <Label row="2" column="3" [text]="timeString" (tap)="selectTime()" verticalAlignment="center"></Label> -->
                 
         <Label row="3" column="1" text="Activity:" verticalAlignment="center" horizontalAlignment="right"></Label>
         <Label row="3" column="3" class="selectable" [text]="activity" (tap)="selectActivity()" verticalAlignment="center" horizontalAlignment="left"></Label>
@@ -29,8 +24,8 @@
         <Label row="5" column="3" rowspan="2" class="selectable" [text]="unit" (tap)="selectUnit()" verticalAlignment="center" 
                 horizontalAlignment="left"></Label>
 
-        <Label row="7" column="2" class="fas submitCheck popup" verticalAlignment="center"
+        <Label row="7" colspan="5" class="fas submitCheck popup" verticalAlignment="center" 
                 text="&#xf058;" (tap)="submitGoal()"></Label>
 
-        
+         
 </GridLayout>

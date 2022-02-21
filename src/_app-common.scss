@@ -137,6 +137,11 @@ button {
   padding-top: 50px;
 }
 
+Label {
+  color: white;
+  font-family: "Armata", "Armata-Regular";
+  text-align: center;
+}
 
 Label.averages {
   width: 88%;
@@ -148,12 +153,6 @@ Label.options {
   font-size: 40px;
   color: white;
   font-family: "Armata", "Armata-Regular";
-}
-
-Label {
-  color: white;
-  font-family: "Armata", "Armata-Regular";
-  text-align: center;
 }
 
 Label.calendarTitle {
@@ -172,7 +171,7 @@ TextField {
 
 TextField.distanceInput {
   background-color: #301e36;
-  color: white
+  color: white;
 }
 
 ActionBar {
@@ -304,7 +303,6 @@ ListView.dayPopup {
 }
 
 .monthTile.today Label.date {
-  // background-color: #1f686d;
   height: 24;
   width: 100%;
   text-align: right;

@@ -66,13 +66,6 @@ export class MonthTileComponent implements OnInit {
         this.tile.distances.totalWalkDistance
     );
 
-/*     this.totalGoalDistance = this.entriesService.polishDistance(
-      this.tile.goals.totalRunDistance +
-        this.tile.goals.totalWalkDistance
-    ); */
-
-    
-
   }
 
   public showTileDistance(): boolean {
@@ -84,15 +77,6 @@ export class MonthTileComponent implements OnInit {
     }
   }
   
-/*   public showGoal(): boolean {
-    if (this.today < this.tile.date && this.totalGoalDistance > 0) {
-      return true;
-    } 
-    else {
-      return false;
-    }
-  }
- */
   public getDateStyle(): string {
     if (this.entriesService.sameDay(this.tile.date, new Date())) {
       return "monthTile today date";
@@ -182,10 +166,8 @@ export class MonthTileComponent implements OnInit {
               totalRunDistance: 0,
               }
             }
-      /*       this.totalGoalDistance = this.entriesService.polishDistance(
-              this.tile.goals.totalRunDistance +
-                this.tile.goals.totalWalkDistance
-            ); */
+
+            this.refreshAll.emit(true); 
         
         }
       }); 
